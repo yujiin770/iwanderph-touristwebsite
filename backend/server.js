@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import multer from 'multer';
 import { initializeDatabase } from './config/supabase.js';
 
 // Routes
@@ -9,10 +10,17 @@ import destinationRoutes from './routes/destinations.js';
 import galleryRoutes from './routes/gallery.js';
 import heroRoutes from './routes/hero.js';
 import contactRoutes from './routes/contact.js';
+import uploadRoutes from './routes/upload.js';
 
 dotenv.config();
 
 const app = express();
+
+// Multer setup for file uploads
+const upload = multer({ 
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 50 * 1024 * 1024 } // 50MB limit
+});
 
 // Middleware
 app.use(cors());
@@ -28,6 +36,7 @@ app.use('/api/destinations', destinationRoutes);
 app.use('/api/gallery', galleryRoutes);
 app.use('/api/hero', heroRoutes);
 app.use('/api/contact', contactRoutes);
+app.use('/api/upload', upload.single('file'), uploadRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {

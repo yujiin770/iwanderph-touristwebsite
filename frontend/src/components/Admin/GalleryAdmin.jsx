@@ -6,9 +6,11 @@ function GalleryAdmin() {
   const [gallery, setGallery] = useState([]);
   const [formData, setFormData] = useState({
     title: '',
-    url: '',
   });
+  const [imageFile, setImageFile] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
     fetchGallery();
@@ -32,18 +34,61 @@ function GalleryAdmin() {
     });
   };
 
+  const handleImageSelect = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImageFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const form = new FormData();
-    form.append('title', formData.title);
-    form.append('url', formData.url);
+    if (!imageFile) {
+      alert('Please select an image');
+      return;
+    }
 
     try {
-      await galleryService.upload(form);
-      fetchGallery();
-      setFormData({ title: '', url: '' });
+      setUploading(true);
+
+      const formDataToSend = new FormData();
+      formDataToSend.append('file', imageFile);
+      formDataToSend.append('bucket', 'gallery');
+
+      const uploadRes = await fetch('http://localhost:3000/api/upload', {
+        method: 'POST',
+        body: formDataToSend,
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('admin_token')}`,
+        },
+      });
+
+      if (uploadRes.ok) {
+        const { url } = await uploadRes.json();
+
+        const galleryPayload = {
+          title: formData.title,
+          url: url,
+        };
+
+        await galleryService.create(galleryPayload);
+
+        fetchGallery();
+        setFormData({ title: '' });
+        setImageFile(null);
+        setImagePreview(null);
+      } else {
+        throw new Error('Upload failed');
+      }
     } catch (error) {
-      alert('Error uploading photo');
+      alert('Error uploading photo: ' + error.message);
+    } finally {
+      setUploading(false);
     }
   };
 
@@ -59,7 +104,7 @@ function GalleryAdmin() {
 
   return (
     <div className="admin-section">
-      <h2>Manage Gallery</h2>
+      <h2>📸 Manage Gallery</h2>
 
       <form onSubmit={handleSubmit} className="admin-form">
         <div className="form-group">
@@ -75,24 +120,28 @@ function GalleryAdmin() {
         </div>
 
         <div className="form-group">
-          <label>Image URL</label>
+          <label>📤 Upload Photo</label>
           <input
-            type="url"
-            name="url"
-            value={formData.url}
-            onChange={handleChange}
-            placeholder="https://example.com/photo.jpg"
+            type="file"
+            accept="image/*"
+            onChange={handleImageSelect}
+            className="file-input"
             required
           />
+          {imagePreview && (
+            <div className="image-preview">
+              <img src={imagePreview} alt="Preview" />
+            </div>
+          )}
         </div>
 
-        <button type="submit" className="save-btn">
-          Add Photo
+        <button type="submit" className="save-btn" disabled={uploading}>
+          {uploading ? '⏳ Uploading...' : '📤 Upload Photo'}
         </button>
       </form>
 
       <div className="admin-list">
-        <h3>Gallery Photos</h3>
+        <h3>🖼️ Gallery Photos</h3>
         {loading ? (
           <p>Loading...</p>
         ) : gallery.length === 0 ? (
@@ -107,7 +156,7 @@ function GalleryAdmin() {
                   onClick={() => handleDelete(photo.id)}
                   className="delete-btn"
                 >
-                  Delete
+                  🗑️ Delete
                 </button>
               </div>
             ))}
