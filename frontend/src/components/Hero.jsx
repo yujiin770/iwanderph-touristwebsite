@@ -29,7 +29,7 @@ function Hero({ heroData }) {
           <p>
             {heroData?.description || "Discover the stunning beaches, vibrant coral reefs, and breathtaking landscapes of the Pearl of the Orient."}
           </p>
-          <button className="explore-btn">Start Your Adventure →</button>
+          <button className="explore-btn">Start Your Adventure </button>
         </div>
         <div className="hero-image-container">
           <img

@@ -64,7 +64,7 @@ function AdminDashboard() {
         <div className="sidebar-footer">
           <div className="user-info">
             <i className="fas fa-user-circle"></i>
-            <span>{user?.email}</span>
+            <div className="user-info-text">{user?.email}</div>
           </div>
           <button onClick={logout} className="logout-btn" title="Sign out">
             <i className="fas fa-sign-out-alt"></i>
@@ -85,24 +85,26 @@ function AdminDashboard() {
           </button>
         </div>
 
-        <Routes>
-          <Route path="/destinations" element={<DestinationsAdmin />} />
-          <Route path="/gallery" element={<GalleryAdmin />} />
-          <Route path="/hero" element={<HeroAdmin />} />
-          <Route path="/contact" element={<ContactAdmin />} />
-          <Route
-            path="/"
-            element={
-              <div className="admin-welcome">
-                <h2>👋 Welcome, {user?.email?.split('@')[0]}!</h2>
-                <p>Select an option from the sidebar to manage your content.</p>
-                <p style={{ marginTop: '2rem', fontSize: '0.95rem', opacity: 0.8 }}>
-                  ✨ Use the modern admin panel to edit your tourist destination content, gallery photos, hero section, and contact information.
-                </p>
-              </div>
-            }
-          />
-        </Routes>
+        <div className="admin-main-content">
+          <Routes>
+            <Route path="/destinations" element={<DestinationsAdmin />} />
+            <Route path="/gallery" element={<GalleryAdmin />} />
+            <Route path="/hero" element={<HeroAdmin />} />
+            <Route path="/contact" element={<ContactAdmin />} />
+            <Route
+              path="/"
+              element={
+                <div className="admin-welcome">
+                  <h2>👋 Welcome, {user?.email?.split('@')[0]}!</h2>
+                  <p>Select an option from the sidebar to manage your content.</p>
+                  <p style={{ marginTop: '2rem', fontSize: '0.95rem', opacity: 0.8 }}>
+                    ✨ Use the modern admin panel to edit your tourist destination content, gallery photos, hero section, and contact information.
+                  </p>
+                </div>
+              }
+            />
+          </Routes>
+        </div>
       </div>
     </div>
   );
