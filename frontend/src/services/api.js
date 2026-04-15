@@ -33,6 +33,7 @@ export const destinationService = {
 // Gallery services
 export const galleryService = {
   getAll: () => api.get('/gallery'),
+  create: (data) => api.post('/gallery', data),
   upload: (formData) => api.post('/gallery', formData, {
     headers: { 'Content-Type': 'multipart/form-data' }
   }),

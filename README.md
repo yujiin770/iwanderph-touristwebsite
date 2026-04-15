@@ -12,12 +12,15 @@ A modern, responsive tourist website for the Philippines built with React, Node.
   - Dark/Light theme toggle
 
 - **Admin Dashboard:**
-  - Secure login system
-  - Manage destinations (add/edit/delete)
-  - Manage gallery photos
-  - Edit hero section content
-  - Update contact information
-  - Responsive admin interface
+  - 🎨 Modern, fantastic UI with gradient sidebar
+  - 🔐 Secure JWT login system
+  - 📤 Direct file upload for all images (no URL copy-paste!)
+  - 🏝️ Manage destinations with photo upload
+  - 📸 Manage gallery photos with instant upload
+  - 🎡 Edit hero carousel with multiple image support
+  - 📝 Update contact information
+  - 📱 Fully responsive design
+  - 🌙 Dark mode support throughout
 
 - **Technology Stack:**
   - Frontend: React 18 + Vite + React Router
@@ -62,7 +65,8 @@ IWANDER PH/
 ├── backend/
 │   ├── config/
 │   │   ├── supabase.js
-│   │   └── mailer.js
+│   │   ├── mailer.js
+│   │   └── storage.js
 │   ├── middleware/
 │   │   └── auth.js
 │   ├── controllers/
@@ -76,7 +80,8 @@ IWANDER PH/
 │   │   ├── destinations.js
 │   │   ├── gallery.js
 │   │   ├── hero.js
-│   │   └── contact.js
+│   │   ├── contact.js
+│   │   └── upload.js (NEW)
 │   ├── server.js
 │   └── package.json
 ```
@@ -86,8 +91,23 @@ IWANDER PH/
 ### Prerequisites
 - Node.js 
 - npm or yarn
-- Supabase account
+- Supabase account with Storage buckets
 - Gmail account (for nodemailer)
+
+### ✨ NEW: File Upload System
+
+**Version 2.0 Features:**
+- 📤 Direct image upload in admin panel
+- 🎡 Editable hero carousel with multiple images
+- 🏝️ Upload destination photos directly
+- 📸 Upload gallery photos without URLs
+- 🎨 Modern gradient sidebar UI
+- 📱 Mobile-responsive admin interface
+
+**Get Started:**
+1. Create Supabase Storage buckets: `destinations`, `gallery`, `hero`
+2. See `QUICK_START.md` for 5-minute setup
+3. See `STORAGE_SETUP.md` for detailed storage configuration
 
 ### 1. Backend Setup
 

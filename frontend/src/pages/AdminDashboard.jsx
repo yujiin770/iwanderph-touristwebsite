@@ -9,7 +9,7 @@ import ContactAdmin from '../components/Admin/ContactAdmin';
 
 function AdminDashboard() {
   const { user, logout } = useAuth();
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const location = useLocation();
 
   return (
@@ -20,8 +20,9 @@ function AdminDashboard() {
           <button
             className="sidebar-toggle"
             onClick={() => setSidebarOpen(!sidebarOpen)}
+            title="Toggle menu"
           >
-            <i className="fas fa-bars"></i>
+            <i className="fas fa-times"></i>
           </button>
         </div>
 
@@ -29,36 +30,45 @@ function AdminDashboard() {
           <Link
             to="/admin/destinations"
             className={`nav-item ${location.pathname.includes('destinations') ? 'active' : ''}`}
+            onClick={() => setSidebarOpen(false)}
           >
-            <i className="fas fa-map-pin"></i> Destinations
+            <i className="fas fa-map-pin"></i>
+            <span>Destinations</span>
           </Link>
           <Link
             to="/admin/gallery"
             className={`nav-item ${location.pathname.includes('gallery') ? 'active' : ''}`}
+            onClick={() => setSidebarOpen(false)}
           >
-            <i className="fas fa-images"></i> Gallery
+            <i className="fas fa-images"></i>
+            <span>Gallery</span>
           </Link>
           <Link
             to="/admin/hero"
             className={`nav-item ${location.pathname.includes('hero') ? 'active' : ''}`}
+            onClick={() => setSidebarOpen(false)}
           >
-            <i className="fas fa-star"></i> Hero Section
+            <i className="fas fa-star"></i>
+            <span>Hero Section</span>
           </Link>
           <Link
             to="/admin/contact"
             className={`nav-item ${location.pathname.includes('contact') ? 'active' : ''}`}
+            onClick={() => setSidebarOpen(false)}
           >
-            <i className="fas fa-envelope"></i> Contact Info
+            <i className="fas fa-envelope"></i>
+            <span>Contact Info</span>
           </Link>
         </nav>
 
         <div className="sidebar-footer">
           <div className="user-info">
-            <i className="fas fa-user"></i>
+            <i className="fas fa-user-circle"></i>
             <span>{user?.email}</span>
           </div>
-          <button onClick={logout} className="logout-btn">
-            <i className="fas fa-sign-out-alt"></i> Logout
+          <button onClick={logout} className="logout-btn" title="Sign out">
+            <i className="fas fa-sign-out-alt"></i>
+            <span>Logout</span>
           </button>
         </div>
       </aside>
@@ -66,7 +76,11 @@ function AdminDashboard() {
       <div className="admin-content">
         <div className="admin-header">
           <h1>Dashboard</h1>
-          <button className="mobile-toggle" onClick={() => setSidebarOpen(!sidebarOpen)}>
+          <button
+            className="mobile-toggle"
+            onClick={() => setSidebarOpen(!sidebarOpen)}
+            title="Toggle menu"
+          >
             <i className="fas fa-bars"></i>
           </button>
         </div>
@@ -80,8 +94,11 @@ function AdminDashboard() {
             path="/"
             element={
               <div className="admin-welcome">
-                <h2>Welcome, {user?.email}!</h2>
+                <h2>👋 Welcome, {user?.email?.split('@')[0]}!</h2>
                 <p>Select an option from the sidebar to manage your content.</p>
+                <p style={{ marginTop: '2rem', fontSize: '0.95rem', opacity: 0.8 }}>
+                  ✨ Use the modern admin panel to edit your tourist destination content, gallery photos, hero section, and contact information.
+                </p>
               </div>
             }
           />

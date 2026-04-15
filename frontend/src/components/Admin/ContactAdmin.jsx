@@ -46,14 +46,14 @@ function ContactAdmin() {
 
   return (
     <div className="admin-section">
-      <h2>Contact Information</h2>
+      <h2>📞 Contact Information</h2>
 
       {loading ? (
         <p>Loading...</p>
       ) : (
         <form onSubmit={handleSubmit} className="admin-form">
           <div className="form-group">
-            <label>Phone Number</label>
+            <label>☎️ Phone Number</label>
             <input
               type="tel"
               name="phone"
@@ -65,7 +65,7 @@ function ContactAdmin() {
           </div>
 
           <div className="form-group">
-            <label>Email Address</label>
+            <label>📧 Email Address</label>
             <input
               type="email"
               name="email"
@@ -77,7 +77,7 @@ function ContactAdmin() {
           </div>
 
           <div className="form-group">
-            <label>Address</label>
+            <label>📍 Address</label>
             <input
               type="text"
               name="address"
@@ -89,7 +89,7 @@ function ContactAdmin() {
           </div>
 
           <button type="submit" className="save-btn">
-            Update Contact Info
+            💾 Update Contact Info
           </button>
         </form>
       )}
