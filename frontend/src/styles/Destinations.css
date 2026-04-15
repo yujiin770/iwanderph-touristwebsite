@@ -1,0 +1,81 @@
+.destinations-section {
+    padding: 4rem 0;
+    background: var(--lm-bg);
+    transition: background-color 0.3s ease;
+}
+
+body.dark-mode .destinations-section {
+    background: var(--dm-bg);
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    position: relative;
+}
+
+.section-header h2 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin: 0 0 0.5rem 0;
+    color: var(--primary-blue);
+}
+
+body.dark-mode .section-header h2 {
+    color: #e2e8f0;
+}
+
+.section-header p {
+    font-size: 1.1rem;
+    color: var(--lm-subtext);
+    margin: 0 0 1.5rem 0;
+}
+
+body.dark-mode .section-header p {
+    color: var(--dm-subtext);
+}
+
+.add-btn {
+    background: linear-gradient(45deg, var(--gradient-start), var(--gradient-end));
+    color: white;
+    padding: 0.8rem 1.5rem;
+    border-radius: 5px;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.add-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(59, 130, 246, 0.3);
+}
+
+.destinations-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+@media (max-width: 968px) {
+    .destinations-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .destinations-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .section-header h2 {
+        font-size: 2rem;
+    }
+
+    .destinations-section {
+        padding: 2rem 0;
+    }
+}

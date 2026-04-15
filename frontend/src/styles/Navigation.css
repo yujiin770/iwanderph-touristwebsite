@@ -1,0 +1,230 @@
+nav, .navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2.5rem 0;
+    width: 100%;
+}
+
+.nav-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--lm-bg);
+    transition: background-color 0.3s ease;
+}
+
+body.dark-mode .nav-header {
+    background: var(--dm-bg);
+}
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+}
+
+.navbar {
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+    padding: 2.5rem 1.5rem;
+}
+
+/* --- LOGO STYLES --- */
+.logo {
+    font-family: 'Dancing Script', cursive;
+    font-weight: 700;
+    font-size: 2.2rem;
+    text-decoration: none;
+    position: relative;
+    padding-bottom: 5px;
+    color: #0A2463;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+body.dark-mode .logo {
+    color: #e2e8f0;
+}
+
+.logo-icon {
+    font-size: 1.4rem;
+    background: linear-gradient(45deg, #FFD700, #FFA500);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+}
+
+.logo::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 5%;
+    width: 90%;
+    height: 6px;
+    background: linear-gradient(90deg, #3B82F6, #1E3A8A);
+    border-radius: 50%;
+    filter: blur(2px);
+}
+
+/* --- NAVIGATION LINKS --- */
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 2.5rem;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-links a {
+    text-decoration: none;
+    font-weight: 500;
+    color: inherit;
+    opacity: 0.8;
+    position: relative;
+    transition: opacity 0.3s;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+    opacity: 1;
+}
+
+.nav-links a.active::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    background: var(--lm-highlight);
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+body.dark-mode .nav-links a.active::after {
+    background: var(--dm-highlight);
+}
+
+/* --- NAV ICONS --- */
+.nav-icons {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.theme-toggle-btn,
+.hamburger {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: inherit;
+    font-size: 1.4rem;
+    transition: transform 0.3s;
+}
+
+.theme-toggle-btn:hover,
+.hamburger:hover {
+    transform: scale(1.1);
+}
+
+.hamburger {
+    display: none;
+    font-size: 1.5rem;
+    z-index: 110;
+}
+
+.admin-link,
+.login-link,
+.logout-btn {
+    padding: 0.7rem 1.2rem;
+    border-radius: 5px;
+    font-weight: 500;
+    transition: all 0.3s;
+}
+
+.admin-link,
+.login-link {
+    color: var(--lm-highlight);
+    border: 1px solid var(--lm-highlight);
+}
+
+body.dark-mode .admin-link,
+body.dark-mode .login-link {
+    color: var(--dm-highlight);
+    border-color: var(--dm-highlight);
+}
+
+.admin-link:hover,
+.login-link:hover {
+    background: var(--lm-highlight);
+    color: white;
+}
+
+body.dark-mode .admin-link:hover,
+body.dark-mode .login-link:hover {
+    background: var(--dm-highlight);
+    color: white;
+}
+
+.logout-btn {
+    background: var(--lm-highlight);
+    color: white;
+    border: none;
+    padding: 0.7rem 1.2rem;
+}
+
+body.dark-mode .logout-btn {
+    background: var(--dm-highlight);
+}
+
+.logout-btn:hover {
+    opacity: 0.9;
+}
+
+/* --- RESPONSIVE --- */
+@media (max-width: 768px) {
+    .hamburger {
+        display: block;
+    }
+
+    .nav-links {
+        display: none;
+        position: fixed;
+        top: 80px;
+        left: 0;
+        width: 100%;
+        height: calc(100vh - 80px);
+        background-color: var(--lm-bg);
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 2rem;
+        padding-top: 2rem;
+        z-index: 99;
+    }
+
+    body.dark-mode .nav-links {
+        background-color: var(--dm-bg);
+    }
+
+    .nav-links.active {
+        display: flex;
+    }
+
+    .nav-icons {
+        gap: 1rem;
+    }
+
+    .admin-link,
+    .login-link {
+        display: none;
+    }
+
+    .logo {
+        font-size: 1.8rem;
+    }
+}

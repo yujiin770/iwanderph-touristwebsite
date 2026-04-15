@@ -1,0 +1,84 @@
+:root {
+    --lm-bg: #F0F2F5;
+    --lm-text: #1c1e21;
+    --lm-subtext: #606770;
+    --lm-highlight: #0d82e8;
+    --dm-bg: #18191A;
+    --dm-text: #E4E6EB;
+    --dm-subtext: #b0b3b8;
+    --dm-highlight: #3578E5;
+    --primary-blue: #0A2463;
+    --gradient-start: #3B82F6;
+    --gradient-end: #1E3A8A;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    line-height: 1.6;
+}
+
+body.light-mode {
+    background-color: var(--lm-bg);
+    color: var(--lm-text);
+}
+
+body.dark-mode {
+    background-color: var(--dm-bg);
+    color: var(--dm-text);
+}
+
+html, body, #root {
+    height: 100%;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+button {
+    cursor: pointer;
+    border: none;
+    font-family: 'Poppins', sans-serif;
+}
+
+input, textarea, select {
+    font-family: 'Poppins', sans-serif;
+}
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    box-sizing: border-box;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--lm-bg);
+}
+
+body.dark-mode ::-webkit-scrollbar-track {
+    background: var(--dm-bg);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--lm-subtext);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--lm-highlight);
+}
