@@ -3,6 +3,7 @@ import { useAuth } from '../context/AuthContext';
 import Navigation from '../components/Navigation';
 import Hero from '../components/Hero';
 import Destinations from '../components/Destinations';
+import Activities from '../components/Activities'; // Import the new component
 import Gallery from '../components/Gallery';
 import Contact from '../components/Contact';
 import '../styles/HomePage.css';
@@ -68,6 +69,7 @@ function HomePage() {
             isAdmin={!!user}
             onDelete={handleDeleteDestination}
           />
+          <Activities /> {/* Add Activities section here */}
           <Gallery
             gallery={gallery}
             isAdmin={!!user}
