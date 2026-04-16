@@ -1,17 +1,20 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../styles/Activities.css';
 
 // Import your specific images for each activity
-import hanginTulayImage from '../assets/chocolate-hills.jpg'; // Changed from .svg to .jpg
+import hanginTulayImage from '../assets/chocolate-hills.jpg';
 import panoramicImage from '../assets/chocolate-hills.jpg';
 import spelunkingImage from '../assets/siargao.jpg';
 import islandHoppingImage from '../assets/mayon-volcano.jpg';
 import waterfallImage from '../assets/coron.jpg';
 
 function Activities() {
+  const navigate = useNavigate();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
   const [hoveredId, setHoveredId] = useState(null);
+  const [imagesLoaded, setImagesLoaded] = useState({});
 
   const activities = [
     {
@@ -66,6 +69,17 @@ function Activities() {
     return () => clearInterval(interval);
   }, [isMobile, activities.length]);
 
+  // Preload images
+  useEffect(() => {
+    activities.forEach((activity) => {
+      const img = new Image();
+      img.src = activity.image;
+      img.onload = () => {
+        setImagesLoaded(prev => ({ ...prev, [activity.id]: true }));
+      };
+    });
+  }, []);
+
   const goToSlide = (index) => {
     setCurrentIndex(index);
   };
@@ -76,6 +90,10 @@ function Activities() {
 
   const goToNext = () => {
     setCurrentIndex((prev) => (prev + 1) % activities.length);
+  };
+
+  const handleExploreClick = () => {
+    navigate('/activities');
   };
 
   return (
@@ -97,11 +115,24 @@ function Activities() {
                 onMouseLeave={() => setHoveredId(null)}
               >
                 <div className="activity-image-wrapper">
-                  <img src={activity.image} alt={activity.title} />
+                  {!imagesLoaded[activity.id] && (
+                    <div className="image-placeholder"></div>
+                  )}
+                  <img 
+                    src={activity.image} 
+                    alt={activity.title}
+                    style={{ 
+                      opacity: imagesLoaded[activity.id] ? 1 : 0,
+                      transition: 'opacity 0.3s ease'
+                    }}
+                  />
                   <div className="activity-overlay">
                     <h3>{activity.title}</h3>
-                    <button className="explore-activity-btn">
-                      {activity.buttonText} 
+                    <button 
+                      className="explore-activity-btn"
+                      onClick={handleExploreClick}
+                    >
+                      {activity.buttonText} <span>→</span>
                     </button>
                   </div>
                 </div>
@@ -124,7 +155,10 @@ function Activities() {
                       <img src={activity.image} alt={activity.title} />
                       <div className="activity-overlay">
                         <h3>{activity.title}</h3>
-                        <button className="explore-activity-btn">
+                        <button 
+                          className="explore-activity-btn"
+                          onClick={handleExploreClick}
+                        >
                           {activity.buttonText} <span>→</span>
                         </button>
                       </div>
