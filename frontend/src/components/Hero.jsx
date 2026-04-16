@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import '../styles/Hero.css';
 
 // Import local images
-import boracayImage from '../assets/boracay.svg';
+import boracayImage from '../assets/chocolate-hills.jpg';
 import chocolateHillsImage from '../assets/chocolate-hills.jpg';
 import siargaoImage from '../assets/siargao.jpg';
 import mayonVolcanoImage from '../assets/mayon-volcano.jpg';

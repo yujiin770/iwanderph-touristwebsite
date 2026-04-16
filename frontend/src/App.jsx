@@ -7,6 +7,7 @@ import './styles/index.css';
 import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import AdminDashboard from './pages/AdminDashboard';
+import ActivitiesPage from './components/ActivitiesPage';
 
 // Protected route component
 function ProtectedRoute({ children }) {
@@ -25,6 +26,7 @@ function AppRoutes() {
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />
+      <Route path="/activities" element={<ActivitiesPage />} />
       <Route
         path="/login"
         element={user ? <Navigate to="/admin" /> : <LoginPage />}
