@@ -1,23 +1,40 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/Hero.css';
 
+// Import local images
+import boracayImage from '../assets/boracay.svg';
+import chocolateHillsImage from '../assets/chocolate-hills.jpg';
+import siargaoImage from '../assets/siargao.jpg';
+import mayonVolcanoImage from '../assets/mayon-volcano.jpg';
+import coronImage from '../assets/coron.jpg';
+
+// NEW: A more visible loader component with a spinner icon
+const ImageLoader = () => (
+  <div className="image-loader">
+    <i className="fas fa-spinner fa-spin"></i>
+    <p>Loading Images...</p>
+  </div>
+);
+
 function Hero({ heroData }) {
-  const [images, setImages] = useState([
-    "https://images.pexels.com/photos/1632242/pexels-photo-1632242.jpeg",
-    "https://images.pexels.com/photos/11995818/pexels-photo-11995818.jpeg",
-    "https://images.pexels.com/photos/1598991/pexels-photo-1598991.jpeg",
-    "https://images.pexels.com/photos/2085739/pexels-photo-2085739.jpeg",
-    "https://images.pexels.com/photos/236681/pexels-photo-236681.jpeg"
-  ]);
+  const localImages = [
+    boracayImage,
+    chocolateHillsImage,
+    siargaoImage,
+    mayonVolcanoImage,
+    coronImage,
+  ];
 
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [isInitialImageLoaded, setIsInitialImageLoaded] = useState(false);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentImageIndex(prev => (prev + 1) % images.length);
+      setCurrentImageIndex(prevIndex => (prevIndex + 1) % localImages.length);
     }, 5000);
+
     return () => clearInterval(interval);
-  }, [images.length]);
+  }, [localImages.length]);
 
   return (
     <section id="home" className="hero">
@@ -29,23 +46,43 @@ function Hero({ heroData }) {
           <p>
             {heroData?.description || "Discover the stunning beaches, vibrant coral reefs, and breathtaking landscapes of the Pearl of the Orient."}
           </p>
-          <button className="explore-btn">Start Your Adventure </button>
+          <button className="explore-btn">Start Your Adventure</button>
         </div>
+
         <div className="hero-image-container">
-          <img
-            src={images[currentImageIndex]}
-            alt="Beautiful Philippine beach"
-            className="slider-image"
-          />
-          <div className="image-indicators">
-            {images.map((_, idx) => (
-              <button
-                key={idx}
-                className={`indicator ${idx === currentImageIndex ? 'active' : ''}`}
-                onClick={() => setCurrentImageIndex(idx)}
+          {/* Show the new spinner loader if the first image hasn't loaded */}
+          {!isInitialImageLoaded && <ImageLoader />}
+
+          <div
+            className="slider-track"
+            style={{ 
+              transform: `translateX(-${currentImageIndex * 100}%)`,
+              visibility: isInitialImageLoaded ? 'visible' : 'hidden' 
+            }}
+          >
+            {localImages.map((imageSrc, index) => (
+              <img
+                key={index}
+                src={imageSrc}
+                alt={`Philippine scenery ${index + 1}`}
+                className="slider-image"
+                onLoad={index === 0 ? () => setIsInitialImageLoaded(true) : undefined}
+                loading="eager" 
               />
             ))}
           </div>
+
+          {isInitialImageLoaded && (
+            <div className="image-indicators">
+              {localImages.map((_, idx) => (
+                <button
+                  key={idx}
+                  className={`indicator ${idx === currentImageIndex ? 'active' : ''}`}
+                  onClick={() => setCurrentImageIndex(idx)}
+                />
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </section>
