@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { destinationService } from '../../services/api';
+import { destinationService, uploadService } from '../../services/api';
 import '../../styles/Admin.css';
 
 function DestinationsAdmin() {
@@ -62,24 +62,8 @@ function DestinationsAdmin() {
       let imageUrl = formData.image;
 
       if (imageFile && imageFile.type.startsWith('image/')) {
-        const formDataToSend = new FormData();
-        formDataToSend.append('file', imageFile);
-        formDataToSend.append('bucket', 'destination');
-
-        const uploadRes = await fetch('http://localhost:3000/api/upload', {
-          method: 'POST',
-          body: formDataToSend,
-          headers: {
-            'Authorization': `Bearer ${localStorage.getItem('admin_token')}`,
-          },
-        });
-
-        if (uploadRes.ok) {
-          const { url } = await uploadRes.json();
-          imageUrl = url;
-        } else {
-          throw new Error('Upload failed');
-        }
+        // Upload to Supabase Storage
+        imageUrl = await uploadService.uploadImage(imageFile, 'destinations');
       }
 
       const dataToSave = {
@@ -230,18 +214,8 @@ function DestinationsAdmin() {
                   <p className="label">{dest.label}</p>
                   <p className="desc">{dest.description.substring(0, 50)}...</p>
                   <div className="card-actions">
-                    <button
-                      onClick={() => handleEdit(dest)}
-                      className="edit-btn"
-                    >
-                      ✏️ Edit
-                    </button>
-                    <button
-                      onClick={() => handleDelete(dest.id)}
-                      className="delete-btn"
-                    >
-                      🗑️ Delete
-                    </button>
+                    <button onClick={() => handleEdit(dest)} className="edit-btn">✏️ Edit</button>
+                    <button onClick={() => handleDelete(dest.id)} className="delete-btn">🗑️ Delete</button>
                   </div>
                 </div>
               </div>

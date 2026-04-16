@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { supabase } from '../lib/supabase';
 
 const AuthContext = createContext();
 
@@ -8,14 +9,22 @@ export function AuthProvider({ children }) {
   const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'light-mode');
 
   useEffect(() => {
-    // Check if user is already logged in
-    const storedUser = localStorage.getItem('admin_user');
-    const token = localStorage.getItem('admin_token');
+    // Check current session
+    const checkUser = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      setUser(session?.user || null);
+      setLoading(false);
+    };
     
-    if (storedUser && token) {
-      setUser(JSON.parse(storedUser));
-    }
-    setLoading(false);
+    checkUser();
+    
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user || null);
+      setLoading(false);
+    });
+    
+    return () => subscription.unsubscribe();
   }, []);
 
   useEffect(() => {
@@ -24,16 +33,18 @@ export function AuthProvider({ children }) {
     localStorage.setItem('theme', theme);
   }, [theme]);
 
-  const login = (userData, token) => {
-    setUser(userData);
-    localStorage.setItem('admin_user', JSON.stringify(userData));
-    localStorage.setItem('admin_token', token);
+  const login = async (email, password) => {
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password
+    });
+    
+    if (error) throw error;
+    return data;
   };
 
-  const logout = () => {
-    setUser(null);
-    localStorage.removeItem('admin_user');
-    localStorage.removeItem('admin_token');
+  const logout = async () => {
+    await supabase.auth.signOut();
   };
 
   const toggleTheme = () => {

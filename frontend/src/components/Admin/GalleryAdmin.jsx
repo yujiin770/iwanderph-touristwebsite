@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { galleryService } from '../../services/api';
+import { galleryService, uploadService } from '../../services/api';
 import '../../styles/Admin.css';
 
 function GalleryAdmin() {
   const [gallery, setGallery] = useState([]);
-  const [formData, setFormData] = useState({
-    title: '',
-  });
+  const [formData, setFormData] = useState({ title: '' });
   const [imageFile, setImageFile] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -28,10 +26,7 @@ function GalleryAdmin() {
   };
 
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleImageSelect = (e) => {
@@ -39,9 +34,7 @@ function GalleryAdmin() {
     if (file) {
       setImageFile(file);
       const reader = new FileReader();
-      reader.onloadend = () => {
-        setImagePreview(reader.result);
-      };
+      reader.onloadend = () => setImagePreview(reader.result);
       reader.readAsDataURL(file);
     }
   };
@@ -56,35 +49,16 @@ function GalleryAdmin() {
     try {
       setUploading(true);
 
-      const formDataToSend = new FormData();
-      formDataToSend.append('file', imageFile);
-      formDataToSend.append('bucket', 'gallery');
+      // Upload to Supabase Storage
+      const imageUrl = await uploadService.uploadImage(imageFile, 'gallery');
 
-      const uploadRes = await fetch('http://localhost:3000/api/upload', {
-        method: 'POST',
-        body: formDataToSend,
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('admin_token')}`,
-        },
-      });
+      const galleryPayload = { title: formData.title, url: imageUrl };
+      await galleryService.create(galleryPayload);
 
-      if (uploadRes.ok) {
-        const { url } = await uploadRes.json();
-
-        const galleryPayload = {
-          title: formData.title,
-          url: url,
-        };
-
-        await galleryService.create(galleryPayload);
-
-        fetchGallery();
-        setFormData({ title: '' });
-        setImageFile(null);
-        setImagePreview(null);
-      } else {
-        throw new Error('Upload failed');
-      }
+      fetchGallery();
+      setFormData({ title: '' });
+      setImageFile(null);
+      setImagePreview(null);
     } catch (error) {
       alert('Error uploading photo: ' + error.message);
     } finally {
@@ -121,13 +95,7 @@ function GalleryAdmin() {
 
         <div className="form-group">
           <label>📤 Upload Photo</label>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleImageSelect}
-            className="file-input"
-            required
-          />
+          <input type="file" accept="image/*" onChange={handleImageSelect} className="file-input" required />
           {imagePreview && (
             <div className="image-preview">
               <img src={imagePreview} alt="Preview" />
@@ -152,12 +120,7 @@ function GalleryAdmin() {
               <div key={photo.id} className="gallery-admin-item">
                 <img src={photo.url} alt={photo.title} />
                 <h4>{photo.title}</h4>
-                <button
-                  onClick={() => handleDelete(photo.id)}
-                  className="delete-btn"
-                >
-                  🗑️ Delete
-                </button>
+                <button onClick={() => handleDelete(photo.id)} className="delete-btn">🗑️ Delete</button>
               </div>
             ))}
           </div>

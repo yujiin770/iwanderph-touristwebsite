@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { authService } from '../services/api';
 import { useNavigate } from 'react-router-dom';
 import '../styles/Login.css';
 
@@ -18,12 +17,10 @@ function LoginPage() {
     setError('');
 
     try {
-      const response = await authService.login(email, password);
-      const { token, user } = response.data;
-      login(user, token);
+      await login(email, password);
       navigate('/admin');
     } catch (err) {
-      setError(err.response?.data?.message || 'Invalid email or password');
+      setError(err.message || 'Invalid email or password');
     } finally {
       setLoading(false);
     }
