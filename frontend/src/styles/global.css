@@ -38,6 +38,14 @@ html, body, #root {
     height: 100%;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
+section[id] {
+    scroll-margin-top: 110px;
+}
+
 a {
     text-decoration: none;
     color: inherit;

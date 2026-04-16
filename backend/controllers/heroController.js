@@ -11,6 +11,7 @@ export async function getHeroContent(req, res) {
     res.json(data || {
       title: 'Explore The Islands of The Philippines',
       description: 'Discover the stunning beaches, vibrant coral reefs, and breathtaking landscapes of the Pearl of the Orient.',
+      images: [],
     });
   } catch (error) {
     console.error('Error fetching hero content:', error);
@@ -20,7 +21,8 @@ export async function getHeroContent(req, res) {
 
 export async function updateHeroContent(req, res) {
   try {
-    const { title, description } = req.body;
+    const { title, description, images } = req.body;
+    const safeImages = Array.isArray(images) ? images : [];
 
     const { data: existing } = await supabase
       .from('hero_content')
@@ -31,13 +33,13 @@ export async function updateHeroContent(req, res) {
     if (existing && existing.length > 0) {
       result = await supabase
         .from('hero_content')
-        .update({ title, description })
+        .update({ title, description, images: safeImages })
         .eq('id', existing[0].id)
         .select();
     } else {
       result = await supabase
         .from('hero_content')
-        .insert([{ title, description }])
+        .insert([{ title, description, images: safeImages }])
         .select();
     }
 

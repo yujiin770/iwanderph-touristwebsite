@@ -34,8 +34,13 @@ CREATE TABLE IF NOT EXISTS hero_content (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   title TEXT,
   description TEXT,
+  images JSONB DEFAULT '[]'::jsonb,
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
+
+-- If table already exists, add images column for carousel support
+ALTER TABLE hero_content
+ADD COLUMN IF NOT EXISTS images JSONB DEFAULT '[]'::jsonb;
 
 -- Contact Info Table
 CREATE TABLE IF NOT EXISTS contact_info (
@@ -79,10 +84,15 @@ VALUES ('admin@iwander.com', '$2b$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcg7b3XeKeUxWdeS8
 -- Note: The above is a bcrypt hash. Generate your own at https://bcrypt.online/
 
 -- Insert sample hero content
-INSERT INTO hero_content (title, description)
+INSERT INTO hero_content (title, description, images)
 VALUES (
   'Explore The Islands of The Philippines',
-  'Discover the stunning beaches, vibrant coral reefs, and breathtaking landscapes of the Pearl of the Orient.'
+  'Discover the stunning beaches, vibrant coral reefs, and breathtaking landscapes of the Pearl of the Orient.',
+  '[
+    "https://images.pexels.com/photos/1632242/pexels-photo-1632242.jpeg",
+    "https://images.pexels.com/photos/11995818/pexels-photo-11995818.jpeg",
+    "https://images.pexels.com/photos/1598991/pexels-photo-1598991.jpeg"
+  ]'::jsonb
 );
 
 -- Insert sample contact info
