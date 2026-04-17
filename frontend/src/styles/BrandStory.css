@@ -175,7 +175,7 @@ body.dark-mode .feature-item p {
     }
     
     .logo-sun-wrapper i {
-        font-size: 2.2rem;  /* Changed from 1.8rem to 2.2rem */
+        font-size: 3rem;  /* Changed from 1.8rem to 2.2rem */
     }
     
     .brand-content h2 {
@@ -232,11 +232,11 @@ body.dark-mode .feature-item p {
     
     /* MAKE LOGO BIGGER ON SMALL MOBILE */
     .logo-sun-wrapper i {
-        font-size: 1.5rem;  
+        font-size: 2.7rem;  
     }
     
     .brand-logo-text {
-        font-size: 1.9rem;  
+        font-size: 2.7rem;  
     }
     
     .brand-content h2 {

@@ -1,0 +1,221 @@
+/* Utility Footer - Shows on scroll */
+.utility-footer {
+    position: fixed;
+    bottom: 2rem;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.utility-container {
+    max-width: 450px;
+    margin: 0 auto;
+    padding: 0.8rem 1.8rem;
+    background: white;
+    border-radius: 50px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid rgba(59, 130, 246, 0.2);
+}
+
+body.dark-mode .utility-container {
+    background: #1f2937;
+    border-color: rgba(96, 165, 250, 0.2);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* Share Section */
+.utility-share {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.utility-share-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #6b7280;
+    letter-spacing: 1px;
+}
+
+body.dark-mode .utility-share-label {
+    color: #9ca3af;
+}
+
+.utility-share-icons {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.utility-share-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: transparent;
+    font-size: 1rem;
+}
+
+/* Facebook Button */
+.utility-share-btn.fb {
+    color: #1877f2;
+    background: rgba(24, 119, 242, 0.1);
+}
+
+.utility-share-btn.fb:hover {
+    background: #1877f2;
+    color: white;
+    transform: translateY(-2px);
+}
+
+/* Twitter Button */
+.utility-share-btn.twitter {
+    color: #1da1f2;
+    background: rgba(29, 161, 242, 0.1);
+}
+
+.utility-share-btn.twitter:hover {
+    background: #1da1f2;
+    color: white;
+    transform: translateY(-2px);
+}
+
+/* LinkedIn Button */
+.utility-share-btn.linkedin {
+    color: #0077b5;
+    background: rgba(0, 119, 181, 0.1);
+}
+
+.utility-share-btn.linkedin:hover {
+    background: #0077b5;
+    color: white;
+    transform: translateY(-2px);
+}
+
+/* Back to Top Button */
+.utility-back-to-top {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    border: none;
+    padding: 0.5rem 1.2rem;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: white;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.utility-back-to-top:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(59, 130, 246, 0.4);
+}
+
+.utility-back-to-top i {
+    font-size: 0.85rem;
+}
+
+/* Tablet Responsive */
+@media (max-width: 1024px) and (min-width: 769px) {
+    .utility-container {
+        max-width: 500px;
+        padding: 0.7rem 1.5rem;
+    }
+    
+    .utility-share-label {
+        font-size: 0.8rem;
+    }
+    
+    .utility-share-btn {
+        width: 34px;
+        height: 34px;
+        font-size: 0.9rem;
+    }
+    
+    .utility-back-to-top {
+        padding: 0.45rem 1rem;
+        font-size: 0.75rem;
+    }
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .utility-container {
+        max-width: 90%;
+        padding: 0.6rem 1rem;
+    }
+    
+    .utility-share-label {
+        font-size: 0.7rem;
+    }
+    
+    .utility-share-icons {
+        gap: 0.5rem;
+    }
+    
+    .utility-share-btn {
+        width: 30px;
+        height: 30px;
+        font-size: 0.85rem;
+    }
+    
+    .utility-back-to-top span {
+        display: none;
+    }
+    
+    .utility-back-to-top {
+        padding: 0.4rem 0.9rem;
+    }
+    
+    .utility-back-to-top i {
+        font-size: 1rem;
+        margin: 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .utility-container {
+        max-width: 95%;
+        padding: 0.5rem 0.8rem;
+    }
+    
+    .utility-share {
+        gap: 0.5rem;
+    }
+    
+    .utility-share-icons {
+        gap: 0.3rem;
+    }
+    
+    .utility-share-btn {
+        width: 28px;
+        height: 28px;
+        font-size: 0.75rem;
+    }
+    
+    .utility-back-to-top {
+        padding: 0.35rem 0.7rem;
+    }
+}

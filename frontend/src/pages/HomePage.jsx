@@ -7,6 +7,7 @@ import Destinations from '../components/Destinations';
 import Activities from '../components/Activities';
 import Gallery from '../components/Gallery';
 import Contact from '../components/Contact';
+import UtilityFooter from '../components/UtilityFooter'; // Import the utility footer
 import '../styles/HomePage.css';
 import { destinationService, galleryService, heroService } from '../services/api';
 
@@ -64,33 +65,24 @@ function HomePage() {
         <div className="loading">Loading...</div>
       ) : (
         <>
-          <div id="home">
-            <Hero heroData={heroData} />
-          </div>
-          <BrandStory />  {/* Add this new section */}
-          <div id="destinations">
-            <Destinations
-              destinations={destinations}
-              isAdmin={!!user}
-              onDelete={handleDeleteDestination}
-            />
-          </div>
-          
+          <Hero heroData={heroData} />
+          <BrandStory />
+          <Destinations
+            destinations={destinations}
+            isAdmin={!!user}
+            onDelete={handleDeleteDestination}
+          />
           <Activities />
-          
-          <div id="gallery">
-            <Gallery
-              gallery={gallery}
-              isAdmin={!!user}
-              onDelete={handleDeleteGallery}
-            />
-          </div>
-          
-          <div id="contact">
-            <Contact />
-          </div>
+          <Gallery
+            gallery={gallery}
+            isAdmin={!!user}
+            onDelete={handleDeleteGallery}
+          />
+          <Contact />
         </>
       )}
+      
+      {/* MAIN FOOTER - Keep this as is */}
       <footer className="footer">
         <div className="container">
           <p>&copy; 2026 iWander Philippines. All rights reserved.</p>
@@ -101,6 +93,9 @@ function HomePage() {
           </div>
         </div>
       </footer>
+      
+      {/* UTILITY FOOTER - Shows on scroll (separate) */}
+      <UtilityFooter />
     </div>
   );
 }
