@@ -84,40 +84,46 @@ export const destinationService = {
     return { data };
   },
   
-  create: async (destinationData) => {
-    const { data, error } = await supabase
-      .from('destinations')
-      .insert([{
-        name: destinationData.name,
-        label: destinationData.label,
-        description: destinationData.description,
-        image: destinationData.image,
-        rating: parseFloat(destinationData.rating) || 4.5,
-        created_at: new Date()
-      }])
-      .select();
-    
-    if (error) throw error;
-    return { data: data[0] };
-  },
+// In create function
+create: async (destinationData) => {
+  const { data, error } = await supabase
+    .from('destinations')
+    .insert([{
+      name: destinationData.name,
+      label: destinationData.label,
+      description: destinationData.description,
+      image: destinationData.image,
+      rating: parseFloat(destinationData.rating) || 4.5,
+      best_time: destinationData.best_time || 'November - May',
+      activities: destinationData.activities || ['Sightseeing', 'Photography'], // Array format
+      created_at: new Date()
+    }])
+    .select();
   
-  update: async (id, destinationData) => {
-    const { data, error } = await supabase
-      .from('destinations')
-      .update({
-        name: destinationData.name,
-        label: destinationData.label,
-        description: destinationData.description,
-        image: destinationData.image,
-        rating: parseFloat(destinationData.rating) || 4.5
-      })
-      .eq('id', id)
-      .select();
-    
-    if (error) throw error;
-    return { data: data[0] };
-  },
+  if (error) throw error;
+  return { data: data[0] };
+},
+
+// In update function
+update: async (id, destinationData) => {
+  const { data, error } = await supabase
+    .from('destinations')
+    .update({
+      name: destinationData.name,
+      label: destinationData.label,
+      description: destinationData.description,
+      image: destinationData.image,
+      rating: parseFloat(destinationData.rating) || 4.5,
+      best_time: destinationData.best_time,
+      activities: destinationData.activities // Should be array
+    })
+    .eq('id', id)
+    .select();
   
+  if (error) throw error;
+  return { data: data[0] };
+},
+
   delete: async (id) => {
     const { error } = await supabase
       .from('destinations')
