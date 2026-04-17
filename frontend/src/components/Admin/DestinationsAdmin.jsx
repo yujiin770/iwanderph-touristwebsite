@@ -11,6 +11,8 @@ function DestinationsAdmin() {
     description: '',
     image: '',
     rating: '4.5',
+    best_time: 'November - May',
+    activities: 'Sightseeing, Photography, Nature Walks'
   });
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
@@ -62,8 +64,13 @@ function DestinationsAdmin() {
       let imageUrl = formData.image;
 
       if (imageFile && imageFile.type.startsWith('image/')) {
-        // Upload to Supabase Storage
         imageUrl = await uploadService.uploadImage(imageFile, 'destinations');
+      }
+
+      // Convert activities string to array
+      let activitiesArray = [];
+      if (formData.activities) {
+        activitiesArray = formData.activities.split(',').map(item => item.trim());
       }
 
       const dataToSave = {
@@ -72,6 +79,8 @@ function DestinationsAdmin() {
         description: formData.description,
         image: imageUrl,
         rating: formData.rating,
+        best_time: formData.best_time,
+        activities: activitiesArray
       };
 
       if (editingId) {
@@ -81,7 +90,15 @@ function DestinationsAdmin() {
       }
 
       fetchDestinations();
-      setFormData({ name: '', label: '', description: '', image: '', rating: '4.5' });
+      setFormData({ 
+        name: '', 
+        label: '', 
+        description: '', 
+        image: '', 
+        rating: '4.5',
+        best_time: 'November - May',
+        activities: 'Sightseeing, Photography, Nature Walks'
+      });
       setImageFile(null);
       setEditingId(null);
     } catch (error) {
@@ -93,23 +110,52 @@ function DestinationsAdmin() {
 
   const handleEdit = (destination) => {
     setEditingId(destination.id);
-    setFormData(destination);
+    
+    // Convert activities array back to string for the input field
+    let activitiesString = '';
+    if (destination.activities) {
+      if (Array.isArray(destination.activities)) {
+        activitiesString = destination.activities.join(', ');
+      } else {
+        activitiesString = destination.activities;
+      }
+    }
+    
+    setFormData({
+      name: destination.name || '',
+      label: destination.label || '',
+      description: destination.description || '',
+      image: destination.image || '',
+      rating: destination.rating || '4.5',
+      best_time: destination.best_time || 'November - May',
+      activities: activitiesString
+    });
     setImageFile(null);
   };
 
+  // MAKE SURE THIS DELETE FUNCTION EXISTS
   const handleDelete = async (id) => {
     if (!window.confirm('Delete this destination?')) return;
     try {
       await destinationService.delete(id);
       fetchDestinations();
+      alert('Destination deleted successfully!');
     } catch (error) {
-      alert('Error deleting destination');
+      alert('Error deleting destination: ' + error.message);
     }
   };
 
   const handleCancel = () => {
     setEditingId(null);
-    setFormData({ name: '', label: '', description: '', image: '', rating: '4.5' });
+    setFormData({ 
+      name: '', 
+      label: '', 
+      description: '', 
+      image: '', 
+      rating: '4.5',
+      best_time: 'November - May',
+      activities: 'Sightseeing, Photography, Nature Walks'
+    });
     setImageFile(null);
   };
 
@@ -132,13 +178,13 @@ function DestinationsAdmin() {
           </div>
 
           <div className="form-group">
-            <label>Label</label>
+            <label>Label / Location</label>
             <input
               type="text"
               name="label"
               value={formData.label}
               onChange={handleChange}
-              placeholder="e.g., Beach Paradise"
+              placeholder="e.g., Beach Paradise, Palawan"
               required
             />
           </div>
@@ -183,6 +229,35 @@ function DestinationsAdmin() {
               max="5"
               step="0.1"
             />
+          </div>
+        </div>
+
+        {/* ADDITIONAL DETAILS - ONLY 2 FIELDS */}
+        <div className="form-section">
+          <h3>📋 Additional Details</h3>
+          
+          <div className="form-row">
+            <div className="form-group">
+              <label>📅 Best Time to Visit</label>
+              <input
+                type="text"
+                name="best_time"
+                value={formData.best_time}
+                onChange={handleChange}
+                placeholder="e.g., November - May"
+              />
+            </div>
+
+            <div className="form-group">
+              <label>🎯 Activities (comma separated)</label>
+              <input
+                type="text"
+                name="activities"
+                value={formData.activities}
+                onChange={handleChange}
+                placeholder="e.g., Swimming, Hiking, Photography"
+              />
+            </div>
           </div>
         </div>
 
