@@ -3,7 +3,7 @@ import { useAuth } from '../context/AuthContext';
 import Navigation from '../components/Navigation';
 import Hero from '../components/Hero';
 import Destinations from '../components/Destinations';
-import Activities from '../components/Activities'; // Import the new component
+import Activities from '../components/Activities';
 import Gallery from '../components/Gallery';
 import Contact from '../components/Contact';
 import '../styles/HomePage.css';
@@ -63,24 +63,36 @@ function HomePage() {
         <div className="loading">Loading...</div>
       ) : (
         <>
-          <Hero heroData={heroData} />
-          <Destinations
-            destinations={destinations}
-            isAdmin={!!user}
-            onDelete={handleDeleteDestination}
-          />
-          <Activities /> {/* Add Activities section here */}
-          <Gallery
-            gallery={gallery}
-            isAdmin={!!user}
-            onDelete={handleDeleteGallery}
-          />
-          <Contact />
+          <div id="home">
+            <Hero heroData={heroData} />
+          </div>
+          
+          <div id="destinations">
+            <Destinations
+              destinations={destinations}
+              isAdmin={!!user}
+              onDelete={handleDeleteDestination}
+            />
+          </div>
+          
+          <Activities />
+          
+          <div id="gallery">
+            <Gallery
+              gallery={gallery}
+              isAdmin={!!user}
+              onDelete={handleDeleteGallery}
+            />
+          </div>
+          
+          <div id="contact">
+            <Contact />
+          </div>
         </>
       )}
       <footer className="footer">
         <div className="container">
-          <p>&copy; 2024 iWander Philippines. All rights reserved.</p>
+          <p>&copy; 2026 iWander Philippines. All rights reserved.</p>
           <div className="social-links">
             <a href="#" aria-label="Facebook"><i className="fab fa-facebook"></i></a>
             <a href="#" aria-label="Instagram"><i className="fab fa-instagram"></i></a>

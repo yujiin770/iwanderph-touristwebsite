@@ -37,7 +37,7 @@ function Hero({ heroData }) {
   }, [localImages.length]);
 
   return (
-    <section id="home" className="hero">
+    <section className="hero">
       <div className="container" style={{ display: 'flex', gap: '3rem', alignItems: 'center' }}>
         <div className="hero-content">
           <h1>
