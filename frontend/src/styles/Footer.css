@@ -1,0 +1,193 @@
+/* Main Footer - Always Visible */
+.main-footer {
+    background: linear-gradient(135deg, #0a2463, #1a4d8f);
+    padding: 1.5rem 0;
+    margin-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+body.dark-mode .main-footer {
+    background: linear-gradient(135deg, #0f172a, #1a365d);
+}
+
+.footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+.footer-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+/* Copyright Section */
+.footer-copyright p {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.85rem;
+    margin: 0;
+}
+
+body.dark-mode .footer-copyright p {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+/* Share Section */
+.footer-share {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.share-label {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+.share-icons {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.share-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.share-btn:hover {
+    transform: translateY(-3px);
+}
+
+.share-btn i {
+    font-size: 0.9rem;
+}
+
+/* Facebook Button */
+.share-btn.fb:hover {
+    background: #1877f2;
+}
+
+/* Twitter Button */
+.share-btn.twitter:hover {
+    background: #1da1f2;
+}
+
+/* LinkedIn Button */
+.share-btn.linkedin:hover {
+    background: #0077b5;
+}
+
+/* Back to Top Button */
+.footer-back-to-top {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 0.5rem 1.2rem;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: white;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.footer-back-to-top:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-3px);
+}
+
+.footer-back-to-top i {
+    font-size: 0.8rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .footer-container {
+        padding: 0 1.5rem;
+    }
+    
+    .footer-content {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+    }
+    
+    .footer-share {
+        justify-content: center;
+    }
+    
+    .footer-copyright p {
+        font-size: 0.75rem;
+    }
+    
+    .share-label {
+        font-size: 0.75rem;
+    }
+    
+    .share-btn {
+        width: 28px;
+        height: 28px;
+    }
+    
+    .share-btn i {
+        font-size: 0.8rem;
+    }
+    
+    .footer-back-to-top {
+        padding: 0.4rem 1rem;
+        font-size: 0.7rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .footer-container {
+        padding: 0 1rem;
+    }
+    
+    .footer-content {
+        gap: 0.8rem;
+    }
+    
+    .footer-copyright p {
+        font-size: 0.7rem;
+    }
+    
+    .share-label {
+        font-size: 0.7rem;
+    }
+    
+    .share-icons {
+        gap: 0.5rem;
+    }
+    
+    .share-btn {
+        width: 25px;
+        height: 25px;
+    }
+    
+    .share-btn i {
+        font-size: 0.7rem;
+    }
+    
+    .footer-back-to-top {
+        padding: 0.3rem 0.8rem;
+        font-size: 0.65rem;
+    }
+}
