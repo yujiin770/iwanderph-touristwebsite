@@ -37,7 +37,7 @@ function Contact() {
   };
 
   return (
-    <section id="contact" className="contact-section">
+    <section className="contact-section">
       <div className="container">
         <div className="section-header">
           <h2>Get In Touch</h2>

@@ -11,10 +11,7 @@ function Navigation() {
 
   useEffect(() => {
     const sectionIds = ['home', 'destinations', 'gallery', 'contact'];
-    const sections = sectionIds
-      .map((id) => document.getElementById(id))
-      .filter(Boolean);
-
+    
     const onScroll = () => {
       const currentY = window.scrollY;
       const scrollingDown = currentY > lastScrollYRef.current;
@@ -27,25 +24,57 @@ function Navigation() {
       }
       lastScrollYRef.current = currentY;
 
-      const navOffset = 180;
+      const sections = sectionIds.map(id => {
+        const element = document.getElementById(id);
+        if (element) {
+          return {
+            id: id,
+            top: element.offsetTop - 150,
+            bottom: element.offsetTop + element.offsetHeight - 150
+          };
+        }
+        return null;
+      }).filter(Boolean);
+
       let currentSection = 'home';
-      sections.forEach((section) => {
-        if (section.offsetTop - navOffset <= currentY) {
+      for (let i = 0; i < sections.length; i++) {
+        const section = sections[i];
+        if (currentY >= section.top - 50) {
           currentSection = section.id;
         }
-      });
-      setActiveSection(currentSection);
+      }
+      
+      if (currentSection !== activeSection) {
+        setActiveSection(currentSection);
+      }
     };
 
     window.addEventListener('scroll', onScroll, { passive: true });
     onScroll();
 
     return () => window.removeEventListener('scroll', onScroll);
-  }, []);
+  }, [activeSection]);
 
   const handleNavClick = (section) => {
     setActiveSection(section);
     setMenuOpen(false);
+    
+    const element = document.getElementById(section);
+    if (element) {
+      const offset = 80;
+      const elementPosition = element.offsetTop - offset;
+      window.scrollTo({
+        top: elementPosition,
+        behavior: 'smooth'
+      });
+    }
+  };
+
+  const handleBookNow = () => {
+    const contactSection = document.getElementById('contact');
+    if (contactSection) {
+      contactSection.scrollIntoView({ behavior: 'smooth' });
+    }
   };
 
   return (
@@ -61,7 +90,10 @@ function Navigation() {
             <a
               href="#home"
               className={activeSection === 'home' ? 'active' : ''}
-              onClick={() => handleNavClick('home')}
+              onClick={(e) => {
+                e.preventDefault();
+                handleNavClick('home');
+              }}
             >
               Home
             </a>
@@ -70,7 +102,10 @@ function Navigation() {
             <a
               href="#destinations"
               className={activeSection === 'destinations' ? 'active' : ''}
-              onClick={() => handleNavClick('destinations')}
+              onClick={(e) => {
+                e.preventDefault();
+                handleNavClick('destinations');
+              }}
             >
               Destination
             </a>
@@ -79,7 +114,10 @@ function Navigation() {
             <a
               href="#gallery"
               className={activeSection === 'gallery' ? 'active' : ''}
-              onClick={() => handleNavClick('gallery')}
+              onClick={(e) => {
+                e.preventDefault();
+                handleNavClick('gallery');
+              }}
             >
               Gallery
             </a>
@@ -88,7 +126,10 @@ function Navigation() {
             <a
               href="#contact"
               className={activeSection === 'contact' ? 'active' : ''}
-              onClick={() => handleNavClick('contact')}
+              onClick={(e) => {
+                e.preventDefault();
+                handleNavClick('contact');
+              }}
             >
               Contact
             </a>
@@ -99,14 +140,23 @@ function Navigation() {
           <button className="theme-toggle-btn" onClick={toggleTheme}>
             <i className={`fas fa-${theme === 'light-mode' ? 'moon' : 'sun'}`}></i>
           </button>
-          {user ? (
+          
+          {/* Book Now Button - Professional Flat Design */}
+          {!user && (
+            <button onClick={handleBookNow} className="book-now-btn">
+              <i className="fas fa-calendar-check"></i>
+              <span>Book Now</span>
+            </button>
+          )}
+          
+          {/* Admin only - hidden from tourists */}
+          {user && (
             <>
               <a href="/admin" className="admin-link">Admin</a>
               <button onClick={logout} className="logout-btn">Logout</button>
             </>
-          ) : (
-            <a href="/login" className="login-link">Login</a>
           )}
+          
           <button
             className="hamburger"
             onClick={() => setMenuOpen(!menuOpen)}

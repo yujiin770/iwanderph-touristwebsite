@@ -4,7 +4,7 @@ import '../styles/Destinations.css';
 
 function Destinations({ destinations, isAdmin, onEdit, onDelete, onAdd }) {
   return (
-    <section id="destinations" className="destinations-section">
+    <section className="destinations-section">
       <div className="container">
         <div className="section-header">
           <h2>Popular Destinations</h2>

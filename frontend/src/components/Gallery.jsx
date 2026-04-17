@@ -3,7 +3,7 @@ import '../styles/Gallery.css';
 
 function Gallery({ gallery, isAdmin, onDelete, onAdd }) {
   return (
-    <section id="gallery" className="gallery-section">
+    <section className="gallery-section">
       <div className="container">
         <div className="section-header">
           <h2>Gallery</h2>
