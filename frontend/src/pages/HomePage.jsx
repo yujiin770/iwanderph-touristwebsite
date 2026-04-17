@@ -7,7 +7,7 @@ import Destinations from '../components/Destinations';
 import Activities from '../components/Activities';
 import Gallery from '../components/Gallery';
 import Contact from '../components/Contact';
-import UtilityFooter from '../components/UtilityFooter'; // Import the utility footer
+import UtilityFooter from '../components/UtilityFooter';
 import '../styles/HomePage.css';
 import { destinationService, galleryService, heroService } from '../services/api';
 
@@ -65,24 +65,41 @@ function HomePage() {
         <div className="loading">Loading...</div>
       ) : (
         <>
-          <Hero heroData={heroData} />
+          {/* ADD ID="home" to Hero section */}
+          <div id="home">
+            <Hero heroData={heroData} />
+          </div>
+          
           <BrandStory />
-          <Destinations
-            destinations={destinations}
-            isAdmin={!!user}
-            onDelete={handleDeleteDestination}
-          />
+          
+          {/* ADD ID="destinations" to Destinations section */}
+          <div id="destinations">
+            <Destinations
+              destinations={destinations}
+              isAdmin={!!user}
+              onDelete={handleDeleteDestination}
+            />
+          </div>
+          
           <Activities />
-          <Gallery
-            gallery={gallery}
-            isAdmin={!!user}
-            onDelete={handleDeleteGallery}
-          />
-          <Contact />
+          
+          {/* ADD ID="gallery" to Gallery section */}
+          <div id="gallery">
+            <Gallery
+              gallery={gallery}
+              isAdmin={!!user}
+              onDelete={handleDeleteGallery}
+            />
+          </div>
+          
+          {/* ADD ID="contact" to Contact section */}
+          <div id="contact">
+            <Contact />
+          </div>
         </>
       )}
       
-      {/* MAIN FOOTER - Keep this as is */}
+      {/* MAIN FOOTER */}
       <footer className="footer">
         <div className="container">
           <p>&copy; 2026 iWander Philippines. All rights reserved.</p>
@@ -94,7 +111,7 @@ function HomePage() {
         </div>
       </footer>
       
-      {/* UTILITY FOOTER - Shows on scroll (separate) */}
+      {/* UTILITY FOOTER */}
       <UtilityFooter />
     </div>
   );
