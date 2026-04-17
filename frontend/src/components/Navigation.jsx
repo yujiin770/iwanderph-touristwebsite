@@ -75,6 +75,7 @@ function Navigation() {
     if (contactSection) {
       contactSection.scrollIntoView({ behavior: 'smooth' });
     }
+    setMenuOpen(false);
   };
 
   return (
@@ -134,6 +135,13 @@ function Navigation() {
               Contact
             </a>
           </li>
+          {/* Book Now button inside mobile menu - at the bottom */}
+          <li className="mobile-book-now">
+            <button onClick={handleBookNow} className="mobile-book-now-btn">
+              <i className="fas fa-calendar-check"></i>
+              <span>Book Now</span>
+            </button>
+          </li>
         </ul>
 
         <div className="nav-icons">
@@ -141,15 +149,15 @@ function Navigation() {
             <i className={`fas fa-${theme === 'light-mode' ? 'moon' : 'sun'}`}></i>
           </button>
           
-          {/* Book Now Button - Professional Flat Design */}
+          {/* Desktop Book Now Button - Hidden on mobile */}
           {!user && (
-            <button onClick={handleBookNow} className="book-now-btn">
+            <button onClick={handleBookNow} className="book-now-btn desktop-only">
               <i className="fas fa-calendar-check"></i>
               <span>Book Now</span>
             </button>
           )}
           
-          {/* Admin only - hidden from tourists */}
+          {/* Admin only */}
           {user && (
             <>
               <a href="/admin" className="admin-link">Admin</a>
