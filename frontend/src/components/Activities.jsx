@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import '../styles/Activities.css';
 
 // Import your specific images for each activity
@@ -9,12 +11,22 @@ import spelunkingImage from '../assets/siargao.jpg';
 import islandHoppingImage from '../assets/mayon-volcano.jpg';
 import waterfallImage from '../assets/coron.jpg';
 
+gsap.registerPlugin(ScrollTrigger);
+
 function Activities() {
   const navigate = useNavigate();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
   const [hoveredId, setHoveredId] = useState(null);
   const [imagesLoaded, setImagesLoaded] = useState({});
+  
+  const sectionRef = useRef(null);
+  const headerRef = useRef(null);
+  const titleRef = useRef(null);
+  const subtitleRef = useRef(null);
+  const gridRef = useRef(null);
+  const carouselRef = useRef(null);
+  const cardsRef = useRef([]);
 
   const activities = [
     {
@@ -80,16 +92,120 @@ function Activities() {
     });
   }, []);
 
+  // GSAP Animations for both desktop and mobile
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      // Header and title animations (works on both desktop and mobile)
+      gsap.fromTo(subtitleRef.current,
+        { y: 30, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.6,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 85%",
+            toggleActions: "play none none reverse"
+          }
+        }
+      );
+
+      gsap.fromTo(titleRef.current,
+        { scale: 0.9, opacity: 0 },
+        {
+          scale: 1,
+          opacity: 1,
+          duration: 0.6,
+          delay: 0.2,
+          ease: "back.out(0.6)",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 85%",
+            toggleActions: "play none none reverse"
+          }
+        }
+      );
+
+      // Desktop: Cards stagger animation
+      if (!isMobile) {
+        cardsRef.current.forEach((card, index) => {
+          gsap.fromTo(card,
+            { 
+              x: index % 2 === 0 ? -80 : 80,
+              opacity: 0,
+              scale: 0.9
+            },
+            {
+              x: 0,
+              opacity: 1,
+              scale: 1,
+              duration: 0.7,
+              delay: index * 0.12,
+              ease: "power3.out",
+              scrollTrigger: {
+                trigger: gridRef.current,
+                start: "top 85%",
+                toggleActions: "play none none reverse"
+              }
+            }
+          );
+        });
+      }
+
+      // Mobile: Carousel fade in animation
+      if (isMobile && carouselRef.current) {
+        gsap.fromTo(carouselRef.current,
+          { opacity: 0, scale: 0.95 },
+          {
+            opacity: 1,
+            scale: 1,
+            duration: 0.8,
+            delay: 0.3,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: "top 85%",
+              toggleActions: "play none none reverse"
+            }
+          }
+        );
+      }
+
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, [isMobile]);
+
   const goToSlide = (index) => {
     setCurrentIndex(index);
+    // Add animation when changing slides on mobile
+    if (isMobile) {
+      gsap.fromTo('.carousel-slide',
+        { opacity: 0.7, scale: 0.95 },
+        { opacity: 1, scale: 1, duration: 0.4, ease: "power2.out" }
+      );
+    }
   };
 
   const goToPrev = () => {
     setCurrentIndex((prev) => (prev - 1 + activities.length) % activities.length);
+    if (isMobile) {
+      gsap.fromTo('.carousel-slide',
+        { opacity: 0.7, scale: 0.95 },
+        { opacity: 1, scale: 1, duration: 0.4, ease: "power2.out" }
+      );
+    }
   };
 
   const goToNext = () => {
     setCurrentIndex((prev) => (prev + 1) % activities.length);
+    if (isMobile) {
+      gsap.fromTo('.carousel-slide',
+        { opacity: 0.7, scale: 0.95 },
+        { opacity: 1, scale: 1, duration: 0.4, ease: "power2.out" }
+      );
+    }
   };
 
   const handleExploreClick = () => {
@@ -97,20 +213,21 @@ function Activities() {
   };
 
   return (
-    <section className="activities-section">
+    <section className="activities-section" ref={sectionRef}>
       <div className="activities-container">
-        <div className="activities-header">
-          <span className="pre-title">THINGS TO DO</span>
-          <h2>ACTIVITIES</h2>
+        <div className="activities-header" ref={headerRef}>
+          <span className="pre-title" ref={subtitleRef}>THINGS TO DO</span>
+          <h2 ref={titleRef}>ACTIVITIES</h2>
         </div>
 
         {/* Desktop View */}
         {!isMobile && (
-          <div className="activities-grid">
-            {activities.map((activity) => (
+          <div className="activities-grid" ref={gridRef}>
+            {activities.map((activity, index) => (
               <div 
                 key={activity.id} 
                 className={`activity-card ${hoveredId === activity.id ? 'hovered' : ''}`}
+                ref={el => cardsRef.current[index] = el}
                 onMouseEnter={() => setHoveredId(activity.id)}
                 onMouseLeave={() => setHoveredId(null)}
               >
@@ -132,7 +249,7 @@ function Activities() {
                       className="explore-activity-btn"
                       onClick={handleExploreClick}
                     >
-                      {activity.buttonText} <span>→</span>
+                      {activity.buttonText} 
                     </button>
                   </div>
                 </div>
@@ -141,9 +258,9 @@ function Activities() {
           </div>
         )}
 
-        {/* Mobile View */}
+        {/* Mobile View - with GSAP animation */}
         {isMobile && (
-          <div className="activities-carousel">
+          <div className="activities-carousel" ref={carouselRef}>
             <div className="carousel-container">
               <div 
                 className="carousel-track"
