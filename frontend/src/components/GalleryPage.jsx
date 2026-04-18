@@ -3,6 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import { galleryService } from '../services/api';
 import '../styles/GalleryPage.css';
 
+// IMPORT YOUR LOCAL IMAGES CORRECTLY
+import chocolateHillsImg from '../assets/chocolate-hills.jpg';
+import siargaoImg from '../assets/siargao.jpg';
+import mayonVolcanoImg from '../assets/mayon-volcano.jpg';
+import coronImg from '../assets/coron.jpg';
+
 function GalleryPage() {
     const navigate = useNavigate();
     const [gallery, setGallery] = useState([]);
@@ -18,30 +24,19 @@ function GalleryPage() {
 
     const imagesPerPage = 20;
 
-    // Local carousel background images
+    // Local carousel background images - USING IMPORTED IMAGES
     const bgImages = [
-        '/src/assets/chocolate-hills.jpg',
-        '/src/assets/chocolate-hills.jpg',
-        '/src/assets/siargao.jpg',
-        '/src/assets/mayon-volcano.jpg',
-        '/src/assets/coron.jpg'
+        chocolateHillsImg,
+        chocolateHillsImg,
+        siargaoImg,
+        mayonVolcanoImg,
+        coronImg
     ];
-    // SCROLL TO TOP WHEN PAGE LOADS - ADD THIS
+
+    // SCROLL TO TOP WHEN PAGE LOADS
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
-
-    useEffect(() => {
-        fetchGallery();
-    }, []);
-
-    // Carousel effect
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setCurrentBgIndex((prev) => (prev + 1) % bgImages.length);
-        }, 5000);
-        return () => clearInterval(interval);
-    }, [bgImages.length]);
 
     useEffect(() => {
         fetchGallery();
@@ -181,7 +176,6 @@ function GalleryPage() {
             {/* Sticky Filters Bar with Home Button */}
             <div className="gallery-page-filters">
                 <div className="filters-container">
-                    {/* Home Button - Sticky */}
                     <button className="home-nav-btn" onClick={() => navigate('/')}>
                         <i className="fas fa-home"></i>
                         <span>Home</span>
@@ -245,7 +239,6 @@ function GalleryPage() {
                         ))}
                     </div>
 
-                    {/* Pagination */}
                     {totalPages > 1 && (
                         <div className="gallery-page-pagination">
                             <button onClick={goToPrevPage} disabled={currentPage === 1}>
@@ -260,7 +253,6 @@ function GalleryPage() {
                         </div>
                     )}
 
-                    {/* No Results */}
                     {filteredGallery.length === 0 && (
                         <div className="gallery-page-empty">
                             <i className="fas fa-camera"></i>

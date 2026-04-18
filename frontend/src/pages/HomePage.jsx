@@ -6,6 +6,7 @@ import BrandStory from '../components/BrandStory';
 import Destinations from '../components/Destinations';
 import Activities from '../components/Activities';
 import Gallery from '../components/Gallery';
+import WhyChooseUs from '../components/WhyChooseUs';
 import Contact from '../components/Contact';
 import UtilityFooter from '../components/UtilityFooter';
 import '../styles/HomePage.css';
@@ -91,6 +92,7 @@ function HomePage() {
               onDelete={handleDeleteGallery}
             />
           </div>
+          <WhyChooseUs />
           
           {/* ADD ID="contact" to Contact section */}
           <div id="contact">
