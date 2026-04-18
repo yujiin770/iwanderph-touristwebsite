@@ -1,6 +1,15 @@
 # iWander Philippines - Tourist Website
 
-A modern, responsive tourist website for the Philippines built with React, Node.js, and Supabase. Features an admin dashboard for managing destinations, gallery, hero content, and contact information.
+A modern, responsive tourist website for the Philippines built with React, vite,  Gsap, and Supabase. Features an admin dashboard for managing destinations, gallery, hero content, and contact information.
+
+
+- **Tech Stack**
+  - Frontend: React + Vite + GSAP + Axios
+  - Backend: Supabase (Database, Auth, Storage)
+  - Deployment: Vercel (Frontend only)
+  - Animations: GSAP with ScrollTrigger
+  - Styling: Vanilla CSS 
+
 
 ## Features
 
@@ -61,30 +70,7 @@ IWANDER PH/
 │   ├── package.json
 │   ├── vite.config.js
 │   └── index.html
-│
-├── backend/
-│   ├── config/
-│   │   ├── supabase.js
-│   │   ├── mailer.js
-│   │   └── storage.js
-│   ├── middleware/
-│   │   └── auth.js
-│   ├── controllers/
-│   │   ├── authController.js
-│   │   ├── destinationController.js
-│   │   ├── galleryController.js
-│   │   ├── heroController.js
-│   │   └── contactController.js
-│   ├── routes/
-│   │   ├── auth.js
-│   │   ├── destinations.js
-│   │   ├── gallery.js
-│   │   ├── hero.js
-│   │   ├── contact.js
-│   │   └── upload.js (NEW)
-│   ├── server.js
-│   └── package.json
-```
+
 
 ## 🔧 Installation & Setup
 
@@ -122,9 +108,3 @@ npm install
 cd frontend
 npm install
 ```
-
-Create `.env` file in frontend folder:
-```env
-VITE_API_URL=http://localhost:5000/api
-```
-
