@@ -8,33 +8,40 @@ function LoadingScreen({ onComplete }) {
   const textRef = useRef(null);
 
   useEffect(() => {
-    const tl = gsap.timeline({
-      onComplete: () => {
-        // Fade out loading screen
-        gsap.to(containerRef.current, {
-          opacity: 0,
-          duration: 0.5,
-          delay: 0.3,
-          onComplete: () => {
-            if (onComplete) onComplete();
+    // Lock scroll immediately
+    document.body.style.overflow = 'hidden';
+    document.body.style.position = 'fixed';
+    document.body.style.width = '100%';
+
+    // Simple entrance - no continuous animations
+    gsap.set(logoRef.current, { scale: 1, rotation: 0, opacity: 1 });
+    gsap.set(textRef.current, { y: 0, opacity: 1 });
+
+    // Set minimum display time then fade out
+    const timer = setTimeout(() => {
+      gsap.to(containerRef.current, {
+        opacity: 0,
+        duration: 0.4,
+        ease: "power2.inOut",
+        onComplete: () => {
+          document.body.style.overflow = '';
+          document.body.style.position = '';
+          document.body.style.width = '';
+          
+          if (containerRef.current) {
+            containerRef.current.style.display = 'none';
           }
-        });
-      }
-    });
+          if (onComplete) onComplete();
+        }
+      });
+    }, 1200);
 
-    tl.fromTo(logoRef.current,
-      { scale: 0, rotation: -180, opacity: 0 },
-      { scale: 1, rotation: 0, opacity: 1, duration: 0.8, ease: "back.out(1.2)" }
-    )
-    .fromTo(textRef.current,
-      { y: 20, opacity: 0 },
-      { y: 0, opacity: 1, duration: 0.5, ease: "power2.out" },
-      "-=0.3"
-    );
-
-    // Minimum loading time of 1.5 seconds
-    const timer = setTimeout(() => {}, 1);
-    return () => clearTimeout(timer);
+    return () => {
+      clearTimeout(timer);
+      document.body.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.width = '';
+    };
   }, [onComplete]);
 
   return (
