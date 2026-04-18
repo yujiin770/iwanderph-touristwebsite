@@ -8,6 +8,7 @@ import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import AdminDashboard from './pages/AdminDashboard';
 import ActivitiesPage from './components/ActivitiesPage';
+import GalleryPage from './components/GalleryPage';
 
 // Protected route component
 function ProtectedRoute({ children }) {
@@ -27,6 +28,7 @@ function AppRoutes() {
     <Routes>
       <Route path="/" element={<HomePage />} />
       <Route path="/activities" element={<ActivitiesPage />} />
+      <Route path="/gallery" element={<GalleryPage />} />
       <Route
         path="/login"
         element={user ? <Navigate to="/admin" /> : <LoginPage />}
