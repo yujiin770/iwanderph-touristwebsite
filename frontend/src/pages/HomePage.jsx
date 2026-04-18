@@ -21,20 +21,12 @@ function HomePage() {
   const [heroData, setHeroData] = useState(null);
   const [contactInfo, setContactInfo] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [showLoadingScreen, setShowLoadingScreen] = useState(true);
+  const [showLoader, setShowLoader] = useState(true);
 
-  // Disable scroll restoration
   useEffect(() => {
     if ('scrollRestoration' in history) {
       history.scrollRestoration = 'manual';
     }
-    window.scrollTo(0, 0);
-    if (window.location.hash) {
-      window.location.hash = '';
-    }
-  }, []);
-
-  useEffect(() => {
     fetchData();
   }, []);
 
@@ -58,8 +50,7 @@ function HomePage() {
   };
 
   const handleLoadingComplete = () => {
-    setShowLoadingScreen(false);
-    // Force scroll to top after loading screen disappears
+    setShowLoader(false);
     window.scrollTo(0, 0);
   };
 
@@ -84,20 +75,16 @@ function HomePage() {
 
   return (
     <>
-      {showLoadingScreen && <LoadingScreen onComplete={handleLoadingComplete} />}
+      {showLoader && <LoadingScreen onComplete={handleLoadingComplete} />}
       
-      <div className="home-page" style={{ opacity: showLoadingScreen ? 0 : 1, transition: 'opacity 0.5s ease' }}>
+      <div className="home-page">
         <Navigation />
         {loading ? (
           <div className="loading">Loading...</div>
         ) : (
           <>
-            <div id="home">
-              <Hero heroData={heroData} />
-            </div>
-
+            <div id="home"><Hero heroData={heroData} /></div>
             <BrandStory />
-
             <div id="destinations">
               <Destinations
                 destinations={destinations}
@@ -105,9 +92,7 @@ function HomePage() {
                 onDelete={handleDeleteDestination}
               />
             </div>
-
             <Activities />
-
             <div id="gallery">
               <Gallery
                 gallery={gallery}
@@ -115,15 +100,12 @@ function HomePage() {
                 onDelete={handleDeleteGallery}
               />
             </div>
-
             <WhyChooseUs />
-
             <div id="contact">
               <Contact contactInfo={contactInfo} isAdmin={!!user} />
             </div>
           </>
         )}
-        
         <MainFooter />
         <UtilityFooter />
       </div>
