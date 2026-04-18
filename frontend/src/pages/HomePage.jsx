@@ -10,13 +10,14 @@ import WhyChooseUs from '../components/WhyChooseUs';
 import Contact from '../components/Contact';
 import UtilityFooter from '../components/UtilityFooter';
 import '../styles/HomePage.css';
-import { destinationService, galleryService, heroService } from '../services/api';
+import { destinationService, galleryService, heroService, contactService } from '../services/api';
 
 function HomePage() {
   const { user } = useAuth();
   const [destinations, setDestinations] = useState([]);
   const [gallery, setGallery] = useState([]);
   const [heroData, setHeroData] = useState(null);
+  const [contactInfo, setContactInfo] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -25,14 +26,16 @@ function HomePage() {
 
   const fetchData = async () => {
     try {
-      const [destRes, galRes, heroRes] = await Promise.all([
+      const [destRes, galRes, heroRes, contactRes] = await Promise.all([
         destinationService.getAll(),
         galleryService.getAll(),
         heroService.get(),
+        contactService.getInfo(),
       ]);
       setDestinations(destRes.data || []);
       setGallery(galRes.data || []);
       setHeroData(heroRes.data);
+      setContactInfo(contactRes.data);
     } catch (error) {
       console.error('Error fetching data:', error);
     } finally {
@@ -92,11 +95,12 @@ function HomePage() {
               onDelete={handleDeleteGallery}
             />
           </div>
+          
           <WhyChooseUs />
           
           {/* ADD ID="contact" to Contact section */}
           <div id="contact">
-            <Contact />
+            <Contact contactInfo={contactInfo} isAdmin={!!user} />
           </div>
         </>
       )}

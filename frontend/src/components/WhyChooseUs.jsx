@@ -37,9 +37,9 @@ function WhyChooseUs() {
         },
         {
             id: 5,
-            icon: "fas fa-headset",
-            title: "Local Support",
-            description: "Friendly local staff ready to assist you 24/7"
+            icon: "fas fa-exchange-alt",
+            title: "One-Way Rentals",
+            description: "Pick up and drop off at different locations"
         },
         {
             id: 6,
