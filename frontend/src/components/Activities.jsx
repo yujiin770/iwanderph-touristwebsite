@@ -5,7 +5,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import '../styles/Activities.css';
 
 // Import your specific images for each activity
-import hanginTulayImage from '../assets/chocolate-hills.jpg';
+import hanginTulayImage from '../assets/SnakeIslandElNido.jpg';
 import panoramicImage from '../assets/chocolate-hills.jpg';
 import spelunkingImage from '../assets/siargao.jpg';
 import islandHoppingImage from '../assets/mayon-volcano.jpg';
