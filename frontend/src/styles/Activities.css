@@ -483,26 +483,146 @@ body.dark-mode .activities-header h2 {
         width: 16px;
     }
 }
-/* Tablet Touch Support */
+
+/* ============ ALL TABLETS (769px - 1024px) ============ */
 @media (min-width: 769px) and (max-width: 1024px) {
+    .activities-grid {
+        display: flex;
+        height: 60vh;
+        min-height: 450px;
+    }
+    
+    .activities-carousel {
+        display: none;
+    }
+    
     .activity-card {
+        flex: 1;
         transition: flex 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        cursor: pointer;
+    }
+    
+    .activity-card.expanded {
+        flex: 3;
+    }
+    
+    .activity-overlay h3 {
+        font-size: 1rem;
+        margin-bottom: 0.8rem;
+        white-space: pre-line;
+        pointer-events: none;
+    }
+    
+    .explore-activity-btn {
+        padding: 0.5rem 1.2rem;
+        font-size: 0.8rem;
+        pointer-events: auto;
+    }
+    
+    .activity-card:not(.expanded) .activity-overlay h3 {
+        font-size: 0.85rem;
+    }
+    
+    .activity-card:not(.expanded) .explore-activity-btn {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.7rem;
+    }
+    
+    .activities-header h2 {
+        font-size: 2.2rem;
+    }
+    
+    /* Remove hover effects on tablets */
+    .activity-card:hover {
+        flex: 1;
+    }
+    
+    .activity-card:hover .activity-image-wrapper img {
+        transform: scale(1);
+    }
+}
+
+/* iPad Pro specific (1024px) */
+@media (min-width: 1024px) and (max-width: 1024px) and (orientation: portrait) {
+    .activities-grid {
+        height: 55vh;
+        min-height: 500px;
     }
     
     .activity-card.expanded {
         flex: 2.5;
     }
     
-    .activity-card:active {
-        transform: scale(0.98);
+    .activity-overlay h3 {
+        font-size: 1.1rem;
+    }
+}
+
+/* Touch feedback */
+.activity-card {
+    -webkit-tap-highlight-color: transparent;
+}
+
+.activity-card:active {
+    transform: scale(0.98);
+    transition: transform 0.05s;
+}
+
+/* ============ ALL TABLETS (769px - 1024px) ============ */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .activities-grid {
+        display: flex;
+        height: 60vh;
+        min-height: 450px;
+    }
+    
+    .activities-carousel {
+        display: none;
+    }
+    
+    .activity-card {
+        flex: 1;
+        transition: flex 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        cursor: pointer;
+    }
+    
+    .activity-card.expanded {
+        flex: 3;
     }
     
     .activity-overlay h3 {
+        font-size: 1rem;
+        margin-bottom: 0.8rem;
+        white-space: pre-line;
         pointer-events: none;
     }
     
     .explore-activity-btn {
+        padding: 0.5rem 1.2rem;
+        font-size: 0.8rem;
         pointer-events: auto;
+    }
+    
+    .activity-card:not(.expanded) .activity-overlay h3 {
+        font-size: 0.85rem;
+    }
+    
+    .activity-card:not(.expanded) .explore-activity-btn {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.7rem;
+    }
+    
+    .activities-header h2 {
+        font-size: 2.2rem;
+    }
+    
+    /* Remove hover effects on tablets */
+    .activity-card:hover {
+        flex: 1;
+    }
+    
+    .activity-card:hover .activity-image-wrapper img {
+        transform: scale(1);
     }
 }
 

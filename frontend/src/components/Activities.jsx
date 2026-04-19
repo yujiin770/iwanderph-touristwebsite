@@ -4,7 +4,6 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import '../styles/Activities.css';
 
-// Import your specific images for each activity
 import hanginTulayImage from '../assets/SnakeIslandElNido.jpg';
 import panoramicImage from '../assets/chocolate-hills.jpg';
 import spelunkingImage from '../assets/siargao.jpg';
@@ -17,9 +16,7 @@ function Activities() {
   const navigate = useNavigate();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
-  const [isTablet, setIsTablet] = useState(false);
-  const [hoveredId, setHoveredId] = useState(null);
-  const [expandedId, setExpandedId] = useState(null); // For touch expand
+  const [expandedId, setExpandedId] = useState(null);
   const [imagesLoaded, setImagesLoaded] = useState({});
   
   const sectionRef = useRef(null);
@@ -63,12 +60,11 @@ function Activities() {
     }
   ];
 
-  // Check screen size for mobile/tablet
+  // Check screen size
   useEffect(() => {
     const checkScreenSize = () => {
       const width = window.innerWidth;
       setIsMobile(width <= 768);
-      setIsTablet(width > 768 && width <= 1024);
     };
     
     checkScreenSize();
@@ -99,7 +95,6 @@ function Activities() {
   // GSAP Animations
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Header and title animations
       gsap.fromTo(subtitleRef.current,
         { y: 30, opacity: 0 },
         {
@@ -181,37 +176,38 @@ function Activities() {
     return () => ctx.revert();
   }, [isMobile]);
 
-  // Handle card click for tablet touch devices
+  // Handle card click for ALL tablets and touch devices
   const handleCardClick = (id) => {
-    if (isTablet) {
-      if (expandedId === id) {
-        // Collapse if already expanded
-        setExpandedId(null);
-        // Reset all cards flex
-        cardsRef.current.forEach((card, idx) => {
-          if (card) {
-            gsap.to(card, {
-              flex: 1,
-              duration: 0.3,
-              ease: "power2.out"
-            });
-          }
-        });
-      } else {
-        // Expand clicked card
-        setExpandedId(id);
-        // Animate the cards
-        cardsRef.current.forEach((card, idx) => {
-          if (card) {
-            const targetFlex = activities[idx]?.id === id ? 2.5 : 1;
-            gsap.to(card, {
-              flex: targetFlex,
-              duration: 0.4,
-              ease: "power2.out"
-            });
-          }
-        });
-      }
+    // Don't apply on mobile (carousel mode)
+    if (isMobile) return;
+    
+    if (expandedId === id) {
+      // Collapse if already expanded
+      setExpandedId(null);
+      // Reset all cards flex
+      cardsRef.current.forEach((card, idx) => {
+        if (card) {
+          gsap.to(card, {
+            flex: 1,
+            duration: 0.4,
+            ease: "power2.out"
+          });
+        }
+      });
+    } else {
+      // Expand clicked card
+      setExpandedId(id);
+      // Animate the cards
+      cardsRef.current.forEach((card, idx) => {
+        if (card) {
+          const targetFlex = activities[idx]?.id === id ? 3 : 1;
+          gsap.to(card, {
+            flex: targetFlex,
+            duration: 0.5,
+            ease: "power2.out"
+          });
+        }
+      });
     }
   };
 
@@ -246,7 +242,6 @@ function Activities() {
   };
 
   const handleExploreClick = (activityTitle) => {
-    // Store selected activity in localStorage or state if needed
     localStorage.setItem('selectedActivity', activityTitle);
     navigate('/activities');
   };
@@ -265,12 +260,9 @@ function Activities() {
             {activities.map((activity, index) => (
               <div 
                 key={activity.id} 
-                className={`activity-card ${hoveredId === activity.id ? 'hovered' : ''} ${expandedId === activity.id ? 'expanded' : ''}`}
+                className={`activity-card ${expandedId === activity.id ? 'expanded' : ''}`}
                 ref={el => cardsRef.current[index] = el}
-                onMouseEnter={() => !isTablet && setHoveredId(activity.id)}
-                onMouseLeave={() => !isTablet && setHoveredId(null)}
-                onClick={() => isTablet && handleCardClick(activity.id)}
-                style={{ cursor: isTablet ? 'pointer' : 'default' }}
+                onClick={() => handleCardClick(activity.id)}
               >
                 <div className="activity-image-wrapper">
                   {!imagesLoaded[activity.id] && (
@@ -285,7 +277,6 @@ function Activities() {
                     }}
                   />
                   <div className="activity-overlay">
-                    {/* Split title into lines for better display */}
                     <h3>
                       {activity.title.split(' ').map((word, i) => (
                         <React.Fragment key={i}>
@@ -301,7 +292,7 @@ function Activities() {
                         handleExploreClick(activity.title);
                       }}
                     >
-                      {activity.buttonText} →
+                      {activity.buttonText} 
                     </button>
                   </div>
                 </div>
@@ -328,7 +319,7 @@ function Activities() {
                           className="explore-activity-btn"
                           onClick={() => handleExploreClick(activity.title)}
                         >
-                          {activity.buttonText} →
+                          {activity.buttonText} 
                         </button>
                       </div>
                     </div>
