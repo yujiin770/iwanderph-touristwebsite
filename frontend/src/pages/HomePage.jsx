@@ -7,6 +7,7 @@ import Destinations from '../components/Destinations';
 import Activities from '../components/Activities';
 import Gallery from '../components/Gallery';
 import WhyChooseUs from '../components/WhyChooseUs';
+import DestinationMap from '../components/DestinationMap';
 import Contact from '../components/Contact';
 import MainFooter from '../components/MainFooter';
 import UtilityFooter from '../components/UtilityFooter';
@@ -92,6 +93,7 @@ function HomePage() {
                 onDelete={handleDeleteDestination}
               />
             </div>
+            <DestinationMap destinations={destinations} />
             <Activities />
             <div id="gallery">
               <Gallery

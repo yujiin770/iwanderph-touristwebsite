@@ -24,10 +24,7 @@ function DestinationModal({ destination, onClose }) {
       { scale: 1, opacity: 1, duration: 0.6, ease: "power3.out", delay: 0.2 }
     );
 
-    // Prevent body scroll when modal is open
     document.body.style.overflow = 'hidden';
-
-    // Close on ESC key
     const handleEsc = (e) => {
       if (e.key === 'Escape') onClose();
     };
@@ -44,8 +41,6 @@ function DestinationModal({ destination, onClose }) {
       onClose();
     }
   };
-
-  // Helper function to format activities if it's a string or array
   const formatActivities = (activities) => {
     if (!activities) return 'Sightseeing, Photography';
     if (Array.isArray(activities)) return activities.join(', ');
