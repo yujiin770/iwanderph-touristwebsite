@@ -46,11 +46,24 @@ const Icons = {
       <line x1="6" y1="6" x2="18" y2="18" />
     </svg>
   ),
+  Logout: () => (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="16" height="16">
+      <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+      <polyline points="16 17 21 12 16 7"></polyline>
+      <line x1="21" y1="12" x2="9" y2="12"></line>
+    </svg>
+  ),
+  ChevronDown: () => (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="16" height="16">
+      <polyline points="6 9 12 15 18 9"></polyline>
+    </svg>
+  )
 };
 
 function AdminDashboard() {
   const { user, logout } = useAuth();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
   const location = useLocation();
 
   useEffect(() => {
@@ -84,12 +97,11 @@ function AdminDashboard() {
 
       <aside className={`admin-sidebar ${sidebarOpen ? 'open' : ''}`}>
         <div className="sidebar-header">
-          {/* Exact Logo Copied from Public Navigation */}
           <div className="admin-sidebar-logo">
             <span>iWander PH</span>
             <i className="fas fa-sun logo-icon"></i>
           </div>
-       
+         
         </div>
 
         <nav className="sidebar-nav">
@@ -126,20 +138,6 @@ function AdminDashboard() {
             <span>Contact Info</span>
           </Link>
         </nav>
-
-        <div className="sidebar-footer">
-          <div className="user-info">
-            <div className="user-avatar">
-              {getInitials(user?.email)}
-            </div>
-            <div className="user-info-text">
-              {user?.email?.split('@')[0] || 'Admin'}
-            </div>
-          </div>
-          <button onClick={logout} className="logout-btn">
-            Logout
-          </button>
-        </div>
       </aside>
 
       <div className="admin-content">
@@ -147,7 +145,34 @@ function AdminDashboard() {
           <button className="mobile-toggle" onClick={() => setSidebarOpen(!sidebarOpen)}>
             <Icons.Menu />
           </button>
-          { }
+          
+          {/* TOP RIGHT PROFILE DROPDOWN */}
+          <div className="header-profile">
+            <button 
+              className="profile-trigger" 
+              onClick={() => setDropdownOpen(!dropdownOpen)}
+              onBlur={() => setTimeout(() => setDropdownOpen(false), 200)} // Closes menu when clicking away
+            >
+              <div className="user-avatar">{getInitials(user?.email)}</div>
+              <span className="user-name desktop-only">{user?.email?.split('@')[0] || 'Admin'}</span>
+              <div className={`chevron ${dropdownOpen ? 'open' : ''}`}>
+                <Icons.ChevronDown />
+              </div>
+            </button>
+
+            {dropdownOpen && (
+              <div className="profile-dropdown">
+                <div className="dropdown-header mobile-only">
+                  <p className="dropdown-name">{user?.email?.split('@')[0] || 'Admin'}</p>
+                  <p className="dropdown-email">{user?.email}</p>
+                </div>
+                <button onClick={logout} className="dropdown-item text-danger">
+                  <Icons.Logout />
+                  Logout
+                </button>
+              </div>
+            )}
+          </div>
         </div>
 
         <div className="admin-main-content">
