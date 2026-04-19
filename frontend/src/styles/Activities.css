@@ -1,4 +1,5 @@
-/* --- ACTIVITIES SECTION - FULL WIDTH --- */
+/* ============ ACTIVITIES SECTION - FIXED FOR TABLET ============ */
+
 .activities-section {
     width: 100%;
     padding: 0;
@@ -21,7 +22,7 @@ body.dark-mode .activities-section {
 
 .activities-header {
     text-align: center;
-    margin-bottom: 4rem;
+    margin-bottom: 3rem;
     padding: 0 2rem;
 }
 
@@ -68,8 +69,8 @@ body.dark-mode .activities-header h2 {
 .activities-grid {
     display: flex;
     width: 100%;
-    height: 100vh;
-    min-height: 600px;
+    height: 85vh;
+    min-height: 550px;
     margin: 0;
     padding: 0;
 }
@@ -122,7 +123,7 @@ body.dark-mode .activities-header h2 {
     justify-content: center;
     align-items: center;
     text-align: center;
-    padding: 2rem;
+    padding: 1.5rem;
     transition: all 0.4s ease;
 }
 
@@ -137,15 +138,16 @@ body.dark-mode .activities-header h2 {
 
 .activity-overlay h3 {
     color: white;
-    font-size: 1.6rem;
+    font-size: 1.4rem;
     font-weight: 800;
-    margin: 0 0 1.5rem 0;
+    margin: 0 0 1rem 0;
     line-height: 1.3;
     letter-spacing: 1px;
     max-width: 90%;
     transform: translateY(0);
     transition: transform 0.4s ease;
     opacity: 1;
+    white-space: pre-line;
 }
 
 .activity-card:hover .activity-overlay h3 {
@@ -156,30 +158,21 @@ body.dark-mode .activities-header h2 {
     background: transparent;
     border: 2px solid white;
     color: white;
-    padding: 0.8rem 2rem;
+    padding: 0.7rem 1.8rem;
     border-radius: 50px;
     font-weight: 700;
-    font-size: 1rem;
+    font-size: 0.9rem;
     cursor: pointer;
     transition: all 0.3s ease;
     display: inline-flex;
     align-items: center;
-    gap: 0.8rem;
+    gap: 0.5rem;
     opacity: 1;
-}
-
-.explore-activity-btn span {
-    transition: transform 0.3s ease;
-    font-size: 1.1rem;
 }
 
 .explore-activity-btn:hover {
     background: white;
     color: var(--primary-blue);
-    transform: translateX(5px);
-}
-
-.explore-activity-btn:hover span {
     transform: translateX(5px);
 }
 
@@ -190,7 +183,7 @@ body.dark-mode .activities-header h2 {
 }
 
 .activity-card:not(:hover) .explore-activity-btn {
-    padding: 0.5rem 1rem;
+    padding: 0.5rem 1.2rem;
     font-size: 0.8rem;
 }
 
@@ -305,30 +298,14 @@ body.dark-mode .activities-header h2 {
     }
     
     .activity-overlay h3 {
-        font-size: 1.8rem;
+        font-size: 1.6rem;
     }
 }
 
-/* Desktop Medium (992px - 1199px) */
+/* Desktop (992px - 1199px) */
 @media (min-width: 992px) and (max-width: 1199px) {
-    .activity-overlay h3 {
-        font-size: 1.4rem;
-    }
-    
-    .explore-activity-btn {
-        padding: 0.7rem 1.5rem;
-        font-size: 0.9rem;
-    }
-    
-    .activity-card:hover {
-        flex: 3;
-    }
-}
-
-/* Tablet (769px - 991px) - Still Desktop View */
-@media (min-width: 769px) and (max-width: 991px) {
     .activities-grid {
-        height: auto;
+        height: 70vh;
         min-height: 500px;
     }
     
@@ -337,16 +314,58 @@ body.dark-mode .activities-header h2 {
     }
     
     .explore-activity-btn {
-        padding: 0.6rem 1.2rem;
+        padding: 0.6rem 1.5rem;
         font-size: 0.85rem;
     }
     
-    .activity-card:not(:hover) .activity-overlay h3 {
-        font-size: 0.9rem;
+    .activity-card:hover {
+        flex: 3;
     }
 }
 
-/* Mobile (max-width: 768px) - Switch to Carousel */
+/* ============ TABLET / IPAD (769px - 991px) ============ */
+@media (min-width: 769px) and (max-width: 991px) {
+    /* Keep horizontal grid but adjust height */
+    .activities-grid {
+        display: flex;
+        height: 60vh;
+        min-height: 450px;
+    }
+    
+    .activities-carousel {
+        display: none;
+    }
+    
+    .activity-overlay h3 {
+        font-size: 1rem;
+        margin-bottom: 0.8rem;
+        white-space: pre-line;
+    }
+    
+    .explore-activity-btn {
+        padding: 0.5rem 1.2rem;
+        font-size: 0.8rem;
+    }
+    
+    .activity-card:not(:hover) .activity-overlay h3 {
+        font-size: 0.85rem;
+    }
+    
+    .activity-card:not(:hover) .explore-activity-btn {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.7rem;
+    }
+    
+    .activities-header h2 {
+        font-size: 2.2rem;
+    }
+    
+    .activities-header {
+        margin-bottom: 2rem;
+    }
+}
+
+/* ============ IPAD PORTRAIT (768px) ============ */
 @media (max-width: 768px) {
     .activities-container {
         padding: 3rem 0;
@@ -371,7 +390,7 @@ body.dark-mode .activities-header h2 {
         bottom: -10px;
     }
     
-    /* Hide desktop grid */
+    /* Hide desktop grid on mobile */
     .activities-grid {
         display: none;
     }
@@ -464,6 +483,55 @@ body.dark-mode .activities-header h2 {
         width: 16px;
     }
 }
+/* Tablet Touch Support */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .activity-card {
+        transition: flex 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .activity-card.expanded {
+        flex: 2.5;
+    }
+    
+    .activity-card:active {
+        transform: scale(0.98);
+    }
+    
+    .activity-overlay h3 {
+        pointer-events: none;
+    }
+    
+    .explore-activity-btn {
+        pointer-events: auto;
+    }
+}
+
+/* Feedback for touch */
+.activity-card {
+    -webkit-tap-highlight-color: transparent;
+}
+
+.activity-card:active {
+    transform: scale(0.99);
+}
+
+
+/* Landscape Orientation for Tablets */
+@media (min-width: 769px) and (max-width: 991px) and (orientation: landscape) {
+    .activities-grid {
+        height: 85vh;
+        min-height: 500px;
+    }
+    
+    .activity-overlay h3 {
+        font-size: 0.9rem;
+    }
+    
+    .explore-activity-btn {
+        padding: 0.4rem 1rem;
+        font-size: 0.75rem;
+    }
+}
 
 /* Landscape Orientation for Mobile */
 @media (max-width: 768px) and (orientation: landscape) {
@@ -489,7 +557,7 @@ body.dark-mode .activities-header h2 {
 }
 
 /* Desktop styles override (ensures carousel hidden on desktop) */
-@media (min-width: 769px) {
+@media (min-width: 992px) {
     .activities-carousel {
         display: none;
     }
