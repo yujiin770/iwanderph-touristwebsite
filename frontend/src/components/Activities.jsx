@@ -17,7 +17,9 @@ function Activities() {
   const navigate = useNavigate();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
+  const [isTablet, setIsTablet] = useState(false);
   const [hoveredId, setHoveredId] = useState(null);
+  const [expandedId, setExpandedId] = useState(null); // For touch expand
   const [imagesLoaded, setImagesLoaded] = useState({});
   
   const sectionRef = useRef(null);
@@ -61,15 +63,17 @@ function Activities() {
     }
   ];
 
-  // Check screen size for mobile view
+  // Check screen size for mobile/tablet
   useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth <= 768);
+    const checkScreenSize = () => {
+      const width = window.innerWidth;
+      setIsMobile(width <= 768);
+      setIsTablet(width > 768 && width <= 1024);
     };
     
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
+    checkScreenSize();
+    window.addEventListener('resize', checkScreenSize);
+    return () => window.removeEventListener('resize', checkScreenSize);
   }, []);
 
   // Auto-slide for mobile carousel
@@ -92,10 +96,10 @@ function Activities() {
     });
   }, []);
 
-  // GSAP Animations for both desktop and mobile
+  // GSAP Animations
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Header and title animations (works on both desktop and mobile)
+      // Header and title animations
       gsap.fromTo(subtitleRef.current,
         { y: 30, opacity: 0 },
         {
@@ -127,7 +131,7 @@ function Activities() {
         }
       );
 
-      // Desktop: Cards stagger animation
+      // Desktop/Tablet: Cards stagger animation
       if (!isMobile) {
         cardsRef.current.forEach((card, index) => {
           gsap.fromTo(card,
@@ -177,9 +181,42 @@ function Activities() {
     return () => ctx.revert();
   }, [isMobile]);
 
+  // Handle card click for tablet touch devices
+  const handleCardClick = (id) => {
+    if (isTablet) {
+      if (expandedId === id) {
+        // Collapse if already expanded
+        setExpandedId(null);
+        // Reset all cards flex
+        cardsRef.current.forEach((card, idx) => {
+          if (card) {
+            gsap.to(card, {
+              flex: 1,
+              duration: 0.3,
+              ease: "power2.out"
+            });
+          }
+        });
+      } else {
+        // Expand clicked card
+        setExpandedId(id);
+        // Animate the cards
+        cardsRef.current.forEach((card, idx) => {
+          if (card) {
+            const targetFlex = activities[idx]?.id === id ? 2.5 : 1;
+            gsap.to(card, {
+              flex: targetFlex,
+              duration: 0.4,
+              ease: "power2.out"
+            });
+          }
+        });
+      }
+    }
+  };
+
   const goToSlide = (index) => {
     setCurrentIndex(index);
-    // Add animation when changing slides on mobile
     if (isMobile) {
       gsap.fromTo('.carousel-slide',
         { opacity: 0.7, scale: 0.95 },
@@ -208,7 +245,9 @@ function Activities() {
     }
   };
 
-  const handleExploreClick = () => {
+  const handleExploreClick = (activityTitle) => {
+    // Store selected activity in localStorage or state if needed
+    localStorage.setItem('selectedActivity', activityTitle);
     navigate('/activities');
   };
 
@@ -220,16 +259,18 @@ function Activities() {
           <h2 ref={titleRef}>ACTIVITIES</h2>
         </div>
 
-        {/* Desktop View */}
+        {/* Desktop & Tablet View - Horizontal Expand Grid */}
         {!isMobile && (
           <div className="activities-grid" ref={gridRef}>
             {activities.map((activity, index) => (
               <div 
                 key={activity.id} 
-                className={`activity-card ${hoveredId === activity.id ? 'hovered' : ''}`}
+                className={`activity-card ${hoveredId === activity.id ? 'hovered' : ''} ${expandedId === activity.id ? 'expanded' : ''}`}
                 ref={el => cardsRef.current[index] = el}
-                onMouseEnter={() => setHoveredId(activity.id)}
-                onMouseLeave={() => setHoveredId(null)}
+                onMouseEnter={() => !isTablet && setHoveredId(activity.id)}
+                onMouseLeave={() => !isTablet && setHoveredId(null)}
+                onClick={() => isTablet && handleCardClick(activity.id)}
+                style={{ cursor: isTablet ? 'pointer' : 'default' }}
               >
                 <div className="activity-image-wrapper">
                   {!imagesLoaded[activity.id] && (
@@ -244,12 +285,23 @@ function Activities() {
                     }}
                   />
                   <div className="activity-overlay">
-                    <h3>{activity.title}</h3>
+                    {/* Split title into lines for better display */}
+                    <h3>
+                      {activity.title.split(' ').map((word, i) => (
+                        <React.Fragment key={i}>
+                          {word}
+                          {(i + 1) % 3 === 0 && i !== activity.title.split(' ').length - 1 ? <br /> : ' '}
+                        </React.Fragment>
+                      ))}
+                    </h3>
                     <button 
                       className="explore-activity-btn"
-                      onClick={handleExploreClick}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleExploreClick(activity.title);
+                      }}
                     >
-                      {activity.buttonText} 
+                      {activity.buttonText} →
                     </button>
                   </div>
                 </div>
@@ -258,7 +310,7 @@ function Activities() {
           </div>
         )}
 
-        {/* Mobile View - with GSAP animation */}
+        {/* Mobile View - Carousel */}
         {isMobile && (
           <div className="activities-carousel" ref={carouselRef}>
             <div className="carousel-container">
@@ -274,9 +326,9 @@ function Activities() {
                         <h3>{activity.title}</h3>
                         <button 
                           className="explore-activity-btn"
-                          onClick={handleExploreClick}
+                          onClick={() => handleExploreClick(activity.title)}
                         >
-                          {activity.buttonText} 
+                          {activity.buttonText} →
                         </button>
                       </div>
                     </div>
