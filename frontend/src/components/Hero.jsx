@@ -46,23 +46,23 @@ function Hero({ heroData }) {
     // Wait for elements to be ready
     const ctx = gsap.context(() => {
       // Title animation
-      gsap.fromTo(titleRef.current, 
+      gsap.fromTo(titleRef.current,
         { y: 80, opacity: 0 },
         { y: 0, opacity: 1, duration: 0.8, ease: "power3.out" }
       );
-      
+
       // Description animation
       gsap.fromTo(descRef.current,
         { y: 40, opacity: 0 },
         { y: 0, opacity: 1, duration: 0.6, ease: "power2.out", delay: 0.2 }
       );
-      
+
       // Button animation
       gsap.fromTo(buttonRef.current,
         { scale: 0.9, opacity: 0 },
         { scale: 1, opacity: 1, duration: 0.5, ease: "back.out(0.8)", delay: 0.4 }
       );
-      
+
       // Image container animation
       gsap.fromTo(imageContainerRef.current,
         { x: 100, opacity: 0, scale: 0.95 },
@@ -122,7 +122,7 @@ function Hero({ heroData }) {
   // Image slider animation on change
   useEffect(() => {
     if (isInitialImageLoaded && imageTrackRef.current) {
-      gsap.fromTo('.slider-image', 
+      gsap.fromTo('.slider-image',
         { scale: 1.05, opacity: 0.8 },
         { scale: 1, opacity: 1, duration: 0.6, ease: "power2.out" }
       );
@@ -148,18 +148,23 @@ function Hero({ heroData }) {
           <p ref={descRef}>
             {heroData?.description || "Discover the stunning beaches, vibrant coral reefs, and breathtaking landscapes of the Pearl of the Orient."}
           </p>
-          <button className="explore-btn" ref={buttonRef}>
+          <button className="explore-btn" ref={buttonRef} onClick={() => {
+            const gallerySection = document.getElementById('gallery');
+            if (gallerySection) {
+              gallerySection.scrollIntoView({ behavior: 'smooth' });
+            }
+          }}>
             Start Your Adventure
-          </button>
+          </button>{/*  */}
         </div>
 
         <div className="hero-image-container" ref={imageContainerRef}>
           {!isInitialImageLoaded && <SkeletonLoader />}
-          
-          <div 
+
+          <div
             className="slider-track"
             ref={imageTrackRef}
-            style={{ 
+            style={{
               transform: `translateX(-${currentImageIndex * 100}%)`,
               visibility: isInitialImageLoaded ? 'visible' : 'hidden'
             }}
