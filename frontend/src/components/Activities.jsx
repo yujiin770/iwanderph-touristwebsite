@@ -276,7 +276,7 @@ function Activities() {
                           className="explore-activity-btn"
                           onClick={handleExploreClick}
                         >
-                          {activity.buttonText} <span>→</span>
+                          {activity.buttonText} 
                         </button>
                       </div>
                     </div>
