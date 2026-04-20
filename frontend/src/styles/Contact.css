@@ -27,6 +27,7 @@ body.dark-mode .contact-section-modern {
     0% {
         background-position: 0 0;
     }
+
     100% {
         background-position: 100px 100px;
     }
@@ -228,7 +229,7 @@ body.dark-mode .form-header p {
     transition: all 0.3s;
 }
 
-.input-group textarea ~ i {
+.input-group textarea~i {
     top: 1.2rem;
     transform: none;
 }
@@ -237,9 +238,9 @@ body.dark-mode .form-header p {
 .input-group textarea {
     width: 100%;
     padding: 0.9rem 1rem 0.9rem 2.8rem;
-    border: 2px solid #e5e7eb;
+    border: 2px solid #d1d5db;
     border-radius: 12px;
-    background: var(--lm-bg);
+    background: #ffffff;
     font-size: 0.95rem;
     transition: all 0.3s;
     font-family: inherit;
@@ -252,6 +253,21 @@ body.dark-mode .input-group textarea {
     color: white;
 }
 
+
+/* Light mode specific overrides */
+body:not(.dark-mode) .input-group input,
+body:not(.dark-mode) .input-group textarea {
+    border: 2px solid #cbd5e1;
+    background: #ffffff;
+    color: #1f2937;
+}
+
+body:not(.dark-mode) .input-group input:focus,
+body:not(.dark-mode) .input-group textarea:focus {
+    border-color: #3b82f6;
+    outline: none;
+}
+
 .input-group input:focus,
 .input-group textarea:focus {
     outline: none;
@@ -259,8 +275,8 @@ body.dark-mode .input-group textarea {
     box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
-.input-group input:focus + i,
-.input-group textarea:focus + i {
+.input-group input:focus+i,
+.input-group textarea:focus+i {
     color: #3b82f6;
 }
 
@@ -368,11 +384,11 @@ body.dark-mode .checkmark {
     border-color: #4b5563;
 }
 
-.checkbox-container:hover input ~ .checkmark {
+.checkbox-container:hover input~.checkmark {
     border-color: #3b82f6;
 }
 
-.checkbox-container input:checked ~ .checkmark {
+.checkbox-container input:checked~.checkmark {
     background-color: #3b82f6;
     border-color: #3b82f6;
 }
@@ -383,7 +399,7 @@ body.dark-mode .checkmark {
     display: none;
 }
 
-.checkbox-container input:checked ~ .checkmark:after {
+.checkbox-container input:checked~.checkmark:after {
     display: block;
 }
 
@@ -423,7 +439,7 @@ body.dark-mode .terms-text {
     .contact-content-modern {
         gap: 2rem;
     }
-    
+
     .contact-header h2 {
         font-size: 2rem;
     }
@@ -433,49 +449,72 @@ body.dark-mode .terms-text {
     .contact-section-modern {
         padding: 3rem 0;
     }
-    
+
     .contact-content-modern {
         grid-template-columns: 1fr;
         gap: 2rem;
     }
-    
+
     .contact-header h2 {
         font-size: 1.6rem;
     }
-    
+
     .info-card {
         padding: 1.2rem;
     }
-    
+
     .info-icon {
         width: 50px;
         height: 50px;
     }
-    
+
     .info-icon i {
         font-size: 1.4rem;
     }
-    
+
     .contact-form-modern {
         padding: 1.5rem;
     }
-    
+
     .form-header h3 {
         font-size: 1.3rem;
     }
-      .terms-text {
+
+    .terms-text {
         font-size: 0.7rem;
     }
-    
+
     .checkmark {
         height: 18px;
         width: 18px;
     }
-     .checkbox-container .checkmark:after {
+
+    .checkbox-container .checkmark:after {
         left: 5px;
         top: 1px;
         width: 4px;
         height: 9px;
+    }
+
+    .input-group input,
+    .input-group textarea {
+        border: 2px solid #cbd5e1;
+        background: #ffffff;
+        padding: 0.8rem 1rem 0.8rem 2.5rem;
+    }
+
+    .input-group input::placeholder,
+    .input-group textarea::placeholder {
+        color: #9ca3af;
+    }
+}
+
+/* For tablets */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .input-group input,
+    .input-group textarea {
+        border: 2px solid #d1d5db;
+        background: #ffffff;
     }
 }
 
@@ -484,12 +523,12 @@ body.dark-mode .terms-text {
         flex-direction: column;
         text-align: center;
     }
-    
+
     .info-details h4,
     .info-details p {
         text-align: center;
     }
-    
+
     .input-group input,
     .input-group textarea {
         padding: 0.8rem 1rem 0.8rem 2.5rem;
