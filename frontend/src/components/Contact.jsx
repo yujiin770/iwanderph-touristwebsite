@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import Swal from 'sweetalert2';
 import { contactService } from '../services/api';
 import '../styles/Contact.css';
 
@@ -14,8 +15,8 @@ function Contact({ contactInfo: propContactInfo, isAdmin = false, onUpdate }) {
   });
   const [agreeTerms, setAgreeTerms] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState('');
-  const [error, setError] = useState('');
+  const [honeypot, setHoneypot] = useState('');
+  const [formStartedAt, setFormStartedAt] = useState(() => Date.now());
   const [contactInfo, setContactInfo] = useState({
     phone: '+63 917 123 4567',
     email: 'info@iwanderph.com',
@@ -119,21 +120,53 @@ function Contact({ contactInfo: propContactInfo, isAdmin = false, onUpdate }) {
     
     // Check if terms are agreed
     if (!agreeTerms) {
-      setError('Please agree to the Terms & Conditions before sending.');
+      Swal.fire({
+        icon: 'warning',
+        title: 'Terms Required',
+        text: 'Please agree to the Terms & Conditions before sending.',
+        confirmButtonColor: '#2563eb',
+      });
       return;
     }
     
     setLoading(true);
-    setError('');
-    setSuccess('');
 
     try {
-      await contactService.sendMessage(formData);
-      setSuccess('Message sent successfully! We will get back to you soon.');
+      await contactService.sendMessage({
+        ...formData,
+        website: honeypot,
+        formStartedAt,
+      });
       setFormData({ name: '', email: '', message: '' });
       setAgreeTerms(false);
+      setHoneypot('');
+      setFormStartedAt(Date.now());
+      await Swal.fire({
+        icon: 'success',
+        title: 'Message Sent',
+        text: 'Your message has been sent successfully. We will get back to you soon.',
+        confirmButtonColor: '#2563eb',
+      });
     } catch (err) {
-      setError('Failed to send message. Please try again.');
+      const message = err.message || 'Failed to send message. Please try again.';
+      const lowerMessage = message.toLowerCase();
+      const alertIcon = lowerMessage.includes('daily') || lowerMessage.includes('wait') || lowerMessage.includes('spam')
+        ? 'warning'
+        : 'error';
+      const alertTitle = lowerMessage.includes('daily')
+        ? 'Daily Limit Reached'
+        : lowerMessage.includes('wait')
+          ? 'Cooldown Active'
+          : lowerMessage.includes('spam')
+            ? 'Submission Blocked'
+            : 'Send Failed';
+
+      await Swal.fire({
+        icon: alertIcon,
+        title: alertTitle,
+        text: message,
+        confirmButtonColor: '#2563eb',
+      });
     } finally {
       setLoading(false);
     }
@@ -193,14 +226,22 @@ function Contact({ contactInfo: propContactInfo, isAdmin = false, onUpdate }) {
 
           {/* Contact Form */}
           <form className="contact-form-modern" ref={formRef} onSubmit={handleSubmit}>
+            <div className="contact-honeypot" aria-hidden="true">
+              <input
+                type="text"
+                name="website"
+                tabIndex="-1"
+                autoComplete="off"
+                value={honeypot}
+                onChange={(e) => setHoneypot(e.target.value)}
+              />
+            </div>
+
             <div className="form-header">
               <h3>Send us a Message</h3>
               <p>We'd love to hear from you</p>
             </div>
             
-            {success && <div className="success-message-modern">{success}</div>}
-            {error && <div className="error-message-modern">{error}</div>}
-
             <div className="input-group">
               <input
                 type="text"

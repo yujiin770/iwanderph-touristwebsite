@@ -104,6 +104,12 @@ body.dark-mode .contact-header p {
     grid-template-columns: 1fr 1fr;
     gap: 3rem;
     margin-top: 2rem;
+    align-items: start;
+}
+
+.contact-info-modern,
+.contact-form-modern {
+    min-width: 0;
 }
 
 /* Info Cards */
@@ -165,6 +171,7 @@ body.dark-mode .info-details h4 {
     font-size: 0.95rem;
     margin: 0 0 0.2rem 0;
     color: var(--lm-subtext);
+    word-break: break-word;
 }
 
 body.dark-mode .info-details p {
@@ -182,6 +189,7 @@ body.dark-mode .info-details p {
     padding: 2rem;
     border-radius: 24px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    width: 100%;
 }
 
 body.dark-mode .contact-form-modern {
@@ -212,6 +220,16 @@ body.dark-mode .form-header h3 {
 
 body.dark-mode .form-header p {
     color: var(--dm-subtext);
+}
+
+.contact-honeypot {
+    position: absolute;
+    left: -9999px;
+    opacity: 0;
+    pointer-events: none;
+    width: 0;
+    height: 0;
+    overflow: hidden;
 }
 
 /* Input Groups */
@@ -417,6 +435,7 @@ body.dark-mode .checkmark {
     font-size: 0.8rem;
     color: var(--lm-subtext);
     line-height: 1.4;
+    word-break: break-word;
 }
 
 body.dark-mode .terms-text {
@@ -437,6 +456,7 @@ body.dark-mode .terms-text {
 /* Responsive */
 @media (max-width: 992px) {
     .contact-content-modern {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
         gap: 2rem;
     }
 
@@ -453,6 +473,11 @@ body.dark-mode .terms-text {
     .contact-content-modern {
         grid-template-columns: 1fr;
         gap: 2rem;
+    }
+
+    .contact-info-modern,
+    .contact-form-modern {
+        width: 100%;
     }
 
     .contact-header h2 {
@@ -519,14 +544,28 @@ body.dark-mode .terms-text {
 }
 
 @media (max-width: 480px) {
+    .contact-header {
+        margin-bottom: 2rem;
+    }
+
     .info-card {
         flex-direction: column;
         text-align: center;
+        gap: 1rem;
     }
 
     .info-details h4,
     .info-details p {
         text-align: center;
+    }
+
+    .contact-form-modern {
+        padding: 1.25rem;
+        border-radius: 18px;
+    }
+
+    .checkbox-container {
+        align-items: flex-start;
     }
 
     .input-group input,
