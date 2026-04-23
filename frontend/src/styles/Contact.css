@@ -119,6 +119,120 @@ body.dark-mode .contact-header p {
     gap: 1.5rem;
 }
 
+.support-card {
+    position: relative;
+    overflow: hidden;
+    padding: 1.75rem;
+    border-radius: 24px;
+    background: linear-gradient(145deg, #0f766e, #2563eb);
+    color: white;
+    box-shadow: 0 18px 36px rgba(37, 99, 235, 0.18);
+}
+
+body.dark-mode .support-card {
+    box-shadow: 0 18px 36px rgba(0, 0, 0, 0.35);
+}
+
+.support-card::after {
+    content: "";
+    position: absolute;
+    inset: auto -60px -80px auto;
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.12);
+}
+
+.support-card-top {
+    position: relative;
+    z-index: 1;
+}
+
+.support-card-badge {
+    display: inline-flex;
+    margin-bottom: 0.9rem;
+    padding: 0.35rem 0.8rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.14);
+    font-size: 0.76rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+}
+
+.support-card h4 {
+    margin: 0 0 0.65rem;
+    font-size: 1.35rem;
+    line-height: 1.25;
+}
+
+.support-card p {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.88);
+    line-height: 1.6;
+}
+
+.support-feature-list {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    gap: 0.8rem;
+    margin: 1.4rem 0 1.6rem;
+}
+
+.support-feature-list span {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7rem;
+    font-weight: 600;
+}
+
+.support-feature-list i {
+    width: 34px;
+    height: 34px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.support-card-actions {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+}
+
+.support-card-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 46px;
+    padding: 0.8rem 1.15rem;
+    border-radius: 14px;
+    text-decoration: none;
+    font-weight: 700;
+    transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease;
+}
+
+.support-card-btn.primary {
+    border: none;
+    cursor: pointer;
+    background: white;
+    color: #0f172a;
+}
+
+.support-card-btn.secondary {
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    color: white;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.support-card-btn:hover {
+    transform: translateY(-2px);
+}
+
 .info-card {
     display: flex;
     align-items: center;
@@ -501,6 +615,10 @@ body.dark-mode .terms-text {
         padding: 1.5rem;
     }
 
+    .support-card {
+        padding: 1.4rem;
+    }
+
     .form-header h3 {
         font-size: 1.3rem;
     }
@@ -562,6 +680,14 @@ body.dark-mode .terms-text {
     .contact-form-modern {
         padding: 1.25rem;
         border-radius: 18px;
+    }
+
+    .support-card-actions {
+        flex-direction: column;
+    }
+
+    .support-card-btn {
+        width: 100%;
     }
 
     .checkbox-container {
