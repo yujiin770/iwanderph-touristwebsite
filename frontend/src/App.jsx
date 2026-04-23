@@ -7,6 +7,7 @@ import './styles/index.css';
 import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import AdminDashboard from './pages/AdminDashboard';
+import DestinationsPage from './pages/DestinationsPage';
 import ActivitiesPage from './components/ActivitiesPage';
 import GalleryPage from './components/GalleryPage';
 
@@ -27,6 +28,7 @@ function AppRoutes() {
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />
+      <Route path="/destinations" element={<DestinationsPage />} />
       <Route path="/activities" element={<ActivitiesPage />} />
       <Route path="/gallery" element={<GalleryPage />} />
       <Route

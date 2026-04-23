@@ -3,6 +3,7 @@ import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import DestinationModal from './DestinationModal';
 import 'leaflet/dist/leaflet.css';
 import '../styles/DestinationMap.css';
 
@@ -123,6 +124,7 @@ function DestinationMap({ destinations }) {
   const headerRef = useRef(null);
   const mapWrapperRef = useRef(null);
   const [selectedDestination, setSelectedDestination] = useState(null);
+  const [modalOpen, setModalOpen] = useState(false);
   const [mapCenter, setMapCenter] = useState({ lat: 12.8797, lng: 121.7740 });
   const [mapZoom, setMapZoom] = useState(6);
   const [activeFilter, setActiveFilter] = useState('all');
@@ -202,6 +204,17 @@ function DestinationMap({ destinations }) {
     setMapCenter({ lat: 12.8797, lng: 121.7740 });
     setMapZoom(6);
     setSelectedDestination(null);
+    setModalOpen(false);
+  };
+
+  const handleViewDetailsClick = (destination) => {
+    setSelectedDestination(destination);
+    setModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setModalOpen(false);
+    setSelectedDestination(null);
   };
 
   return (
@@ -280,12 +293,7 @@ function DestinationMap({ destinations }) {
                           </div>
                           <button 
                             className="popup-btn"
-                            onClick={() => {
-                              const element = document.getElementById('destinations');
-                              if (element) {
-                                element.scrollIntoView({ behavior: 'smooth' });
-                              }
-                            }}
+                            onClick={() => handleViewDetailsClick(dest)}
                           >
                             View Details
                           </button>
@@ -330,6 +338,13 @@ function DestinationMap({ destinations }) {
           </div>
         </div>
       </div>
+
+      {modalOpen && selectedDestination && (
+        <DestinationModal
+          destination={selectedDestination}
+          onClose={handleCloseModal}
+        />
+      )}
     </section>
   );
 }
