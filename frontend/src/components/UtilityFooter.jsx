@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/UtilityFooter.css';
 
-function UtilityFooter() {
+function UtilityFooter({ onSupportClick, isSupportOpen = false }) {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -10,8 +10,11 @@ function UtilityFooter() {
       const windowHeight = window.innerHeight;
       const documentHeight = document.documentElement.scrollHeight;
       const distanceFromBottom = documentHeight - (scrollY + windowHeight);
+      const isTouchLayout = window.innerWidth <= 1024;
+      const minScrollBeforeShow = isTouchLayout ? 180 : 300;
+      const minBottomSpace = isTouchLayout ? 80 : 200;
 
-      const mainFooter = document.querySelector('.footer');
+      const mainFooter = document.querySelector('.main-footer');
       let isMainFooterVisible = false;
 
       if (mainFooter) {
@@ -19,7 +22,7 @@ function UtilityFooter() {
         isMainFooterVisible = footerRect.top < windowHeight && footerRect.bottom > 0;
       }
 
-      if (scrollY > 300 && distanceFromBottom > 200 && !isMainFooterVisible) {
+      if (scrollY > minScrollBeforeShow && distanceFromBottom > minBottomSpace && !isMainFooterVisible) {
         setIsVisible(true);
       } else {
         setIsVisible(false);
@@ -60,6 +63,14 @@ function UtilityFooter() {
       {isVisible && (
         <div className="utility-footer">
           <div className="utility-container">
+            <button
+              onClick={onSupportClick}
+              className="utility-support-btn"
+              aria-expanded={isSupportOpen}
+            >
+              <i className={`fas fa-${isSupportOpen ? 'times' : 'headset'}`}></i>
+              <span>Support</span>
+            </button>
             <div className="utility-share">
               <span className="utility-share-label">SHARE</span>
               <div className="utility-share-icons">

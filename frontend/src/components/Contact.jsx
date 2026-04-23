@@ -29,6 +29,12 @@ function Contact({ contactInfo: propContactInfo, isAdmin = false, onUpdate }) {
   const formRef = useRef(null);
   const infoItemsRef = useRef([]);
 
+  const scrollToContactForm = () => {
+    if (formRef.current) {
+      formRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  };
+
   // Fetch contact info if not provided via props
   useEffect(() => {
     if (propContactInfo) {
@@ -220,6 +226,32 @@ function Contact({ contactInfo: propContactInfo, isAdmin = false, onUpdate }) {
                 <h4>Location</h4>
                 <p>{contactInfo.address}</p>
                 <span className="info-sub">Visit us by appointment</span>
+              </div>
+            </div>
+
+            <div className="support-card" ref={el => infoItemsRef.current[3] = el}>
+              <div className="support-card-top">
+                <span className="support-card-badge">SMART SUPPORT</span>
+                <h4>AI guidance with human follow-up</h4>
+                <p>
+                  Start with quick travel assistance, then move to customer service for booking,
+                  pricing, or itinerary questions.
+                </p>
+              </div>
+
+              <div className="support-feature-list">
+                <span><i className="fas fa-map-signs"></i> Destination matching</span>
+                <span><i className="fas fa-wallet"></i> Budget-friendly suggestions</span>
+                <span><i className="fas fa-headset"></i> Real support when needed</span>
+              </div>
+
+              <div className="support-card-actions">
+                <button type="button" className="support-card-btn primary" onClick={scrollToContactForm}>
+                  Ask for Help
+                </button>
+                <a href={`mailto:${contactInfo.email}`} className="support-card-btn secondary">
+                  Email Support
+                </a>
               </div>
             </div>
           </div>

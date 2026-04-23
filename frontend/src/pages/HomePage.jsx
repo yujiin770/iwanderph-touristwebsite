@@ -12,11 +12,13 @@ import Contact from '../components/Contact';
 import MainFooter from '../components/MainFooter';
 import UtilityFooter from '../components/UtilityFooter';
 import LoadingScreen from '../components/LoadingScreen';
+import SupportWidget from '../components/SupportWidget';
 import '../styles/HomePage.css';
 import { destinationService, galleryService, heroService, contactService } from '../services/api';
 
 function HomePage() {
   const { user } = useAuth();
+  const [isSupportOpen, setIsSupportOpen] = useState(false);
   const [destinations, setDestinations] = useState([]);
   const [gallery, setGallery] = useState([]);
   const [heroData, setHeroData] = useState(null);
@@ -109,7 +111,17 @@ function HomePage() {
           </>
         )}
         <MainFooter />
-        <UtilityFooter />
+        <UtilityFooter
+          onSupportClick={() => setIsSupportOpen((prev) => !prev)}
+          isSupportOpen={isSupportOpen}
+        />
+        {!loading && (
+          <SupportWidget
+            isOpen={isSupportOpen}
+            onToggle={setIsSupportOpen}
+            showFloatingButton
+          />
+        )}
       </div>
     </>
   );

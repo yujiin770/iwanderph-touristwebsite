@@ -22,7 +22,7 @@
 .utility-container {
     max-width: 450px;
     margin: 0 auto;
-    padding: 0.8rem 1.8rem;
+    padding: 0.7rem 1.15rem;
     background: white;
     border-radius: 50px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
@@ -30,6 +30,7 @@
     align-items: center;
     justify-content: space-between;
     border: 1px solid rgba(59, 130, 246, 0.2);
+    gap: 0.55rem;
 }
 
 body.dark-mode .utility-container {
@@ -42,7 +43,9 @@ body.dark-mode .utility-container {
 .utility-share {
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: 0.65rem;
+    flex: 1;
+    justify-content: center;
 }
 
 .utility-share-label {
@@ -59,7 +62,7 @@ body.dark-mode .utility-share-label {
 .utility-share-icons {
     display: flex;
     align-items: center;
-    gap: 0.8rem;
+    gap: 0.45rem;
 }
 
 .utility-share-btn {
@@ -126,6 +129,29 @@ body.dark-mode .utility-share-label {
     color: white;
     font-size: 0.8rem;
     font-weight: 600;
+    flex-shrink: 0;
+}
+
+.utility-support-btn {
+    display: none;
+    align-items: center;
+    gap: 0.5rem;
+    background: linear-gradient(135deg, #0f766e, #2563eb);
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: white;
+    font-size: 0.8rem;
+    font-weight: 600;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.utility-support-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(15, 118, 110, 0.35);
 }
 
 .utility-back-to-top:hover {
@@ -141,7 +167,7 @@ body.dark-mode .utility-share-label {
 @media (max-width: 1024px) and (min-width: 769px) {
     .utility-container {
         max-width: 500px;
-        padding: 0.7rem 1.5rem;
+        padding: 0.65rem 1rem;
     }
     
     .utility-share-label {
@@ -158,13 +184,29 @@ body.dark-mode .utility-share-label {
         padding: 0.45rem 1rem;
         font-size: 0.75rem;
     }
+
+    .utility-support-btn {
+        display: inline-flex;
+        padding: 0.45rem 0.9rem;
+        font-size: 0.75rem;
+        width: 40px;
+        height: 40px;
+        padding: 0;
+        border-radius: 50%;
+        justify-content: center;
+        gap: 0;
+    }
+
+    .utility-support-btn span {
+        display: none;
+    }
 }
 
 /* Mobile Responsive */
 @media (max-width: 768px) {
     .utility-container {
         max-width: 90%;
-        padding: 0.6rem 1rem;
+        padding: 0.55rem 0.85rem;
     }
     
     .utility-share-label {
@@ -172,7 +214,7 @@ body.dark-mode .utility-share-label {
     }
     
     .utility-share-icons {
-        gap: 0.5rem;
+        gap: 0.35rem;
     }
     
     .utility-share-btn {
@@ -188,6 +230,21 @@ body.dark-mode .utility-share-label {
     .utility-back-to-top {
         padding: 0.4rem 0.9rem;
     }
+
+    .utility-support-btn {
+        display: inline-flex;
+        padding: 0.4rem 0.85rem;
+        width: 38px;
+        height: 38px;
+        padding: 0;
+        border-radius: 50%;
+        justify-content: center;
+        gap: 0;
+    }
+
+    .utility-support-btn span {
+        display: none;
+    }
     
     .utility-back-to-top i {
         font-size: 1rem;
@@ -198,15 +255,11 @@ body.dark-mode .utility-share-label {
 @media (max-width: 480px) {
     .utility-container {
         max-width: 95%;
-        padding: 0.5rem 0.8rem;
+        padding: 0.45rem 0.65rem;
     }
     
     .utility-share {
-        gap: 0.5rem;
-    }
-    
-    .utility-share-icons {
-        gap: 0.3rem;
+        gap: 0.35rem;
     }
     
     .utility-share-btn {
@@ -217,5 +270,21 @@ body.dark-mode .utility-share-label {
     
     .utility-back-to-top {
         padding: 0.35rem 0.7rem;
+    }
+
+    .utility-support-btn span,
+    .utility-back-to-top span,
+    .utility-share-label {
+        display: none;
+    }
+
+    .utility-support-btn {
+        display: inline-flex;
+        width: 34px;
+        height: 34px;
+        padding: 0;
+        border-radius: 50%;
+        justify-content: center;
+        gap: 0;
     }
 }
