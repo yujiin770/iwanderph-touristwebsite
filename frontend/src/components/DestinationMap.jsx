@@ -217,16 +217,6 @@ function DestinationMap({ destinations }) {
     setModalOpen(false);
   };
 
-  const handleViewDetailsClick = (destination) => {
-    setSelectedDestination(destination);
-    setModalOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setModalOpen(false);
-    setSelectedDestination(null);
-  };
-
   return (
     <section className="destination-map-section" ref={sectionRef}>
       <div className="map-bg-pattern"></div>
