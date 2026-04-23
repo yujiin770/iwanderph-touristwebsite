@@ -214,6 +214,17 @@ function DestinationMap({ destinations }) {
     setMapCenter({ lat: 12.8797, lng: 121.7740 });
     setMapZoom(6);
     setSelectedDestination(null);
+    setModalOpen(false);
+  };
+
+  const handleViewDetailsClick = (destination) => {
+    setSelectedDestination(destination);
+    setModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setModalOpen(false);
+    setSelectedDestination(null);
   };
 
   return (

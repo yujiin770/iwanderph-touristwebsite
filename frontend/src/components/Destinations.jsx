@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import DestinationCard from './DestinationCard';
@@ -8,12 +9,14 @@ import '../styles/Destinations.css';
 gsap.registerPlugin(ScrollTrigger);
 
 function Destinations({ destinations, isAdmin, onEdit, onDelete, onAdd }) {
+  const navigate = useNavigate();
   const sectionRef = useRef(null);
   const headerRef = useRef(null);
   const gridRef = useRef(null);
   const cardsRef = useRef([]);
   const [selectedDestination, setSelectedDestination] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
+  const displayDestinations = destinations.slice(0, 6);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -91,7 +94,7 @@ function Destinations({ destinations, isAdmin, onEdit, onDelete, onAdd }) {
     }, sectionRef);
 
     return () => ctx.revert();
-  }, [destinations]);
+  }, [displayDestinations]);
 
   const handleCardClick = (destination) => {
     setSelectedDestination(destination);
@@ -117,15 +120,23 @@ function Destinations({ destinations, isAdmin, onEdit, onDelete, onAdd }) {
               <span></span>
             </div>
             <p>Discover the most breathtaking places in the Philippines</p>
-            {isAdmin && (
-              <button className="add-btn" onClick={onAdd}>
-                <i className="fas fa-plus"></i> Add Destination
-              </button>
-            )}
+            <div className="button-group">
+              {destinations.length > 6 && (
+                <button className="view-all-btn" onClick={() => navigate('/destinations')}>
+                  View All Destinations <i className="fas fa-arrow-right"></i>
+                </button>
+              )}
+
+              {isAdmin && (
+                <button className="add-btn" onClick={onAdd}>
+                  <i className="fas fa-plus"></i> Add Destination
+                </button>
+              )}
+            </div>
           </div>
 
           <div className="destinations-grid" ref={gridRef}>
-            {destinations.map((destination, index) => (
+            {displayDestinations.map((destination, index) => (
               <div 
                 key={destination.id} 
                 className="destination-card-wrapper"
