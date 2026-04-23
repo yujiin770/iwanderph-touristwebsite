@@ -13,6 +13,11 @@ const EMAILJS_DUPLICATE_WINDOW_MS = 12 * 60 * 60 * 1000;
 const EMAILJS_STORAGE_KEY = 'iwander_contact_rate_limit';
 let contactSubmissionInFlight = false;
 
+const isPlaceholderEnvValue = (value) => {
+  const normalized = String(value || '').trim().toLowerCase();
+  return !normalized || normalized.startsWith('your_') || normalized.includes('placeholder');
+};
+
 const sanitizeContactValue = (value) =>
   String(value || '')
     .replace(/\s+/g, ' ')
@@ -310,8 +315,12 @@ export const contactService = {
   },
 
   sendMessage: async (messageData) => {
-    if (!EMAILJS_SERVICE_ID || !EMAILJS_TEMPLATE_ID || !EMAILJS_PUBLIC_KEY) {
-      throw new Error('EmailJS is not configured yet.');
+    if (
+      isPlaceholderEnvValue(EMAILJS_SERVICE_ID) ||
+      isPlaceholderEnvValue(EMAILJS_TEMPLATE_ID) ||
+      isPlaceholderEnvValue(EMAILJS_PUBLIC_KEY)
+    ) {
+      throw new Error('EmailJS is not configured for production. Add real VITE_EMAILJS_* values in Vercel and redeploy.');
     }
 
     if (contactSubmissionInFlight) {
@@ -390,6 +399,8 @@ export const contactService = {
           template_id: EMAILJS_TEMPLATE_ID,
           user_id: EMAILJS_PUBLIC_KEY,
           template_params: {
+            from_name: cleanedName,
+            from_email: cleanedEmail,
             name: cleanedName,
             email: cleanedEmail,
             message: cleanedMessage,
@@ -411,7 +422,7 @@ export const contactService = {
         }
 
         if (responseText.includes('The Public Key is invalid')) {
-          throw new Error('EmailJS public key is invalid. Check VITE_EMAILJS_PUBLIC_KEY and restart the dev server.');
+          throw new Error('EmailJS public key is invalid. Check VITE_EMAILJS_PUBLIC_KEY in Vercel, then redeploy.');
         }
 
         throw new Error(responseText || 'Failed to send message.');
