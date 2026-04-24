@@ -44,7 +44,6 @@ body.dark-mode .utility-container {
     display: flex;
     align-items: center;
     gap: 0.65rem;
-    flex: 1;
     justify-content: center;
 }
 
