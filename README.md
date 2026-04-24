@@ -74,11 +74,6 @@ IWANDER PH/
 
 ## 🔧 Installation & Setup
 
-### Prerequisites
-- Node.js 
-- npm or yarn
-- Supabase account with Storage buckets
-- Gmail account (for nodemailer)
 
 ### ✨ NEW: File Upload System
 
@@ -95,14 +90,10 @@ IWANDER PH/
 2. See `QUICK_START.md` for 5-minute setup
 3. See `STORAGE_SETUP.md` for detailed storage configuration
 
-### 1. Backend Setup
 
-```bash
-cd backend
-npm install
-```
 
-### 2. Frontend Setup
+
+### 2. Frontend Setups
 
 ```bash
 cd frontend
