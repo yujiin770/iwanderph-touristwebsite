@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Routes, Route, Link, useLocation } from 'react-router-dom';
+import { Routes, Route, useLocation, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import '../styles/AdminDashboard.css';
 import DestinationsAdmin from '../components/Admin/DestinationsAdmin';
 import GalleryAdmin from '../components/Admin/GalleryAdmin';
 import HeroAdmin from '../components/Admin/HeroAdmin';
 import ContactAdmin from '../components/Admin/ContactAdmin';
+import SettingsAdmin from '../components/Admin/SettingsAdmin';
 
 // SVG Icons - Clean and modern
 const Icons = {
@@ -31,6 +32,12 @@ const Icons = {
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
       <rect x="2" y="4" width="20" height="16" rx="2" />
       <path d="M22 7L12 13L2 7" />
+    </svg>
+  ),
+  Settings: () => (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+      <circle cx="12" cy="12" r="3" />
+      <path d="M19.4 15a1 1 0 0 0 .2 1.1l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1 1 0 0 0-1.1-.2 1 1 0 0 0-.6.9V20a2 2 0 1 1-4 0v-.2a1 1 0 0 0-.7-.9 1 1 0 0 0-1.1.2l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1 1 0 0 0 .2-1.1 1 1 0 0 0-.9-.6H4a2 2 0 1 1 0-4h.2a1 1 0 0 0 .9-.7 1 1 0 0 0-.2-1.1l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1 1 0 0 0 1.1.2h.1a1 1 0 0 0 .6-.9V4a2 2 0 1 1 4 0v.2a1 1 0 0 0 .6.9 1 1 0 0 0 1.1-.2l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1 1 0 0 0-.2 1.1v.1a1 1 0 0 0 .9.6H20a2 2 0 1 1 0 4h-.2a1 1 0 0 0-.4.1" />
     </svg>
   ),
   Menu: () => (
@@ -137,6 +144,14 @@ function AdminDashboard() {
             <Icons.Contact />
             <span>Contact Info</span>
           </Link>
+          <Link
+            to="/admin/settings"
+            className={`nav-item ${location.pathname.includes('settings') ? 'active' : ''}`}
+            onClick={() => setSidebarOpen(false)}
+          >
+            <Icons.Settings />
+            <span>Settings</span>
+          </Link>
         </nav>
       </aside>
 
@@ -181,6 +196,7 @@ function AdminDashboard() {
             <Route path="/gallery" element={<GalleryAdmin />} />
             <Route path="/hero" element={<HeroAdmin />} />
             <Route path="/contact" element={<ContactAdmin />} />
+            <Route path="/settings" element={<SettingsAdmin />} />
             <Route
               path="/"
               element={

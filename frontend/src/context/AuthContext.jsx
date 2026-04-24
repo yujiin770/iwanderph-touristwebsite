@@ -51,8 +51,16 @@ export function AuthProvider({ children }) {
     setTheme(prev => prev === 'light-mode' ? 'dark-mode' : 'light-mode');
   };
 
+  const setThemeMode = (mode) => {
+    if (mode !== 'light-mode' && mode !== 'dark-mode') {
+      return;
+    }
+
+    setTheme(mode);
+  };
+
   return (
-    <AuthContext.Provider value={{ user, loading, login, logout, theme, toggleTheme }}>
+    <AuthContext.Provider value={{ user, loading, login, logout, theme, toggleTheme, setThemeMode }}>
       {children}
     </AuthContext.Provider>
   );

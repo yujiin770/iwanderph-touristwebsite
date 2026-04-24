@@ -317,6 +317,8 @@ body.dark-mode .profile-dropdown {
   font-weight: 500;
   color: var(--admin-text);
   transition: background 0.2s;
+  text-decoration: none;
+  box-sizing: border-box;
 }
 
 .dropdown-item:hover {
