@@ -8,12 +8,19 @@ import '../styles/Contact.css';
 gsap.registerPlugin(ScrollTrigger);
 
 function Contact({ contactInfo: propContactInfo, isAdmin = false, onUpdate }) {
+  const escapeHtml = (value) =>
+    String(value || '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     message: '',
   });
-  const [agreeTerms, setAgreeTerms] = useState(false);
   const [loading, setLoading] = useState(false);
   const [honeypot, setHoneypot] = useState('');
   const [formStartedAt, setFormStartedAt] = useState(() => Date.now());
@@ -123,18 +130,64 @@ function Contact({ contactInfo: propContactInfo, isAdmin = false, onUpdate }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    // Check if terms are agreed
-    if (!agreeTerms) {
-      Swal.fire({
-        icon: 'warning',
-        title: 'Terms Required',
-        text: 'Please agree to the Terms & Conditions before sending.',
-        confirmButtonColor: '#2563eb',
-      });
+
+    const confirmationResult = await Swal.fire({
+      title: 'Confirm Message',
+      html: `
+        <div class="contact-confirm-modal">
+          <p class="contact-confirm-intro">Please review your details before we send your message to our support team.</p>
+          <div class="contact-confirm-grid">
+            <div class="contact-confirm-item">
+              <span class="contact-confirm-label">Full Name</span>
+              <p>${escapeHtml(formData.name)}</p>
+            </div>
+            <div class="contact-confirm-item">
+              <span class="contact-confirm-label">Email Address</span>
+              <p>${escapeHtml(formData.email)}</p>
+            </div>
+            <div class="contact-confirm-item full">
+              <span class="contact-confirm-label">Message</span>
+              <p>${escapeHtml(formData.message).replace(/\n/g, '<br>')}</p>
+            </div>
+          </div>
+          <div class="contact-confirm-legal">
+            <p>By sending this message, you confirm that the information is accurate and you agree to our Terms & Conditions and Privacy Policy.</p>
+          </div>
+          <label class="contact-confirm-check">
+            <input type="checkbox" id="contactTermsConfirm" />
+            <span>I have read and agree to the Terms & Conditions and Privacy Policy.</span>
+          </label>
+        </div>
+      `,
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, send it',
+      cancelButtonText: 'Review again',
+      confirmButtonColor: '#2563eb',
+      cancelButtonColor: '#94a3b8',
+      customClass: {
+        popup: 'contact-swal-popup',
+        title: 'contact-swal-title',
+        htmlContainer: 'contact-swal-html',
+        confirmButton: 'contact-swal-confirm',
+        cancelButton: 'contact-swal-cancel',
+      },
+      preConfirm: () => {
+        const termsCheckbox = Swal.getPopup()?.querySelector('#contactTermsConfirm');
+
+        if (!termsCheckbox?.checked) {
+          Swal.showValidationMessage('Please accept the Terms & Conditions and Privacy Policy before sending.');
+          return false;
+        }
+
+        return true;
+      },
+    });
+
+    if (!confirmationResult.isConfirmed) {
       return;
     }
-    
+
     setLoading(true);
 
     try {
@@ -144,7 +197,6 @@ function Contact({ contactInfo: propContactInfo, isAdmin = false, onUpdate }) {
         formStartedAt,
       });
       setFormData({ name: '', email: '', message: '' });
-      setAgreeTerms(false);
       setHoneypot('');
       setFormStartedAt(Date.now());
       await Swal.fire({
@@ -310,20 +362,11 @@ function Contact({ contactInfo: propContactInfo, isAdmin = false, onUpdate }) {
               <i className="fas fa-pencil-alt"></i>
             </div>
 
-            {/* Terms & Conditions Checkbox */}
-            <div className="terms-group">
-              <label className="checkbox-container">
-                <input
-                  type="checkbox"
-                  checked={agreeTerms}
-                  onChange={(e) => setAgreeTerms(e.target.checked)}
-                />
-                <span className="checkmark"></span>
-                <span className="terms-text">
-                  I agree to the <a href="/terms" target="_blank">Terms & Conditions</a> and 
-                  <a href="/privacy" target="_blank"> Privacy Policy</a>
-                </span>
-              </label>
+            <div className="contact-trust-note">
+              <i className="fas fa-circle-check"></i>
+              <p>
+                Please use a legit and registered Gmail or email address so our team can respond to you immediately.
+              </p>
             </div>
 
             <button type="submit" className="submit-btn-modern" disabled={loading}>
