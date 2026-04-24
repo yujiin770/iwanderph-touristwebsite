@@ -48,7 +48,7 @@ function SupportWidget({ isOpen, onToggle, showFloatingButton = true }) {
         <div className="support-panel" role="dialog" aria-label="Travel assistance panel">
           <div className="support-panel-header">
             <div>
-              <span className="support-badge">AI + Care</span>
+              <span className="support-badge">AI + Wander</span>
               <h3>Travel Assistance</h3>
             </div>
             <button
