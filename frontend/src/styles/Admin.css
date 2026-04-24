@@ -74,6 +74,21 @@
   font-family: inherit;
 }
 
+.form-group select {
+  padding-right: 3rem;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--admin-text-secondary) 50%),
+    linear-gradient(135deg, var(--admin-text-secondary) 50%, transparent 50%);
+  background-position:
+    calc(100% - 1.2rem) calc(50% - 3px),
+    calc(100% - 0.85rem) calc(50% - 3px);
+  background-size: 8px 8px, 8px 8px;
+  background-repeat: no-repeat;
+}
+
 .form-group input:focus,
 .form-group textarea:focus,
 .form-group select:focus {
@@ -296,6 +311,125 @@
   width: calc(100% - 1.5rem);
 }
 
+/* Settings */
+.admin-settings-page {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.settings-intro-card {
+  background: var(--admin-bg);
+  border: 1px solid var(--admin-border);
+  border-radius: 16px;
+  padding: 1rem 1.25rem;
+}
+
+.settings-current-email {
+  margin: 0 0 0.35rem;
+  color: var(--admin-text);
+}
+
+.settings-intro-copy {
+  margin: 0;
+  color: var(--admin-text-secondary);
+  line-height: 1.6;
+}
+
+.settings-feedback {
+  margin: -0.25rem 0 0;
+  padding: 0.85rem 1rem;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.settings-feedback.success {
+  background: rgba(16, 185, 129, 0.12);
+  color: #047857;
+}
+
+.settings-feedback.error {
+  background: rgba(239, 68, 68, 0.12);
+  color: #b91c1c;
+}
+
+body.dark-mode .settings-feedback.success {
+  color: #6ee7b7;
+}
+
+body.dark-mode .settings-feedback.error {
+  color: #fca5a5;
+}
+
+.theme-mode-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.theme-mode-card {
+  border: 1px solid var(--admin-border);
+  background: var(--admin-bg);
+  color: var(--admin-text);
+  border-radius: 16px;
+  padding: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font: inherit;
+  font-weight: 600;
+}
+
+.theme-mode-card i {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(37, 99, 235, 0.1);
+  color: var(--admin-primary);
+}
+
+.theme-mode-card:hover,
+.theme-mode-card.active {
+  border-color: var(--admin-primary);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(37, 99, 235, 0.12);
+}
+
+.theme-mode-card.active {
+  background: rgba(37, 99, 235, 0.08);
+}
+
+.settings-suggestion-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.settings-suggestion-card {
+  background: var(--admin-bg);
+  border: 1px solid var(--admin-border);
+  border-radius: 16px;
+  padding: 1rem 1.1rem;
+}
+
+.settings-suggestion-card h3 {
+  margin: 0 0 0.5rem;
+  color: var(--admin-text);
+  font-size: 1rem;
+}
+
+.settings-suggestion-card p {
+  margin: 0;
+  color: var(--admin-text-secondary);
+  line-height: 1.6;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .admin-section {
@@ -320,6 +454,11 @@
   
   .form-actions {
     flex-direction: column;
+  }
+
+  .theme-mode-grid,
+  .settings-suggestion-grid {
+    grid-template-columns: 1fr;
   }
   
   .save-btn,

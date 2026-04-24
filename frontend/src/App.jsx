@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import './styles/index.css';
 
@@ -24,6 +24,9 @@ function ProtectedRoute({ children }) {
 
 function AppRoutes() {
   const { user } = useAuth();
+  const location = useLocation();
+  const isPasswordResetRoute =
+    location.pathname === '/login' && new URLSearchParams(location.search).get('mode') === 'reset';
 
   return (
     <Routes>
@@ -33,7 +36,7 @@ function AppRoutes() {
       <Route path="/gallery" element={<GalleryPage />} />
       <Route
         path="/login"
-        element={user ? <Navigate to="/admin" /> : <LoginPage />}
+        element={user && !isPasswordResetRoute ? <Navigate to="/admin" /> : <LoginPage />}
       />
       <Route
         path="/admin/*"
