@@ -82,7 +82,7 @@ function Navigation() {
     <header className={`nav-header ${isVisible ? 'nav-visible' : 'nav-hidden'}`}>
       <nav className="navbar">
         <div className="logo">
-          <span>iWander PH</span>
+          <span>IWander PH</span>
           <i className="fas fa-sun logo-icon"></i>
         </div>
 
