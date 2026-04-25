@@ -49,7 +49,7 @@ function LoadingScreen({ onComplete }) {
       <div className="loading-content">
         <div className="loading-logo" ref={logoRef}>
           <i className="fas fa-sun"></i>
-          <h1>iWander PH</h1>
+          <h1>IWander PH</h1>
         </div>
         <div className="loading-text" ref={textRef}>
           <p>Discover the beauty of the Philippines</p>
