@@ -285,15 +285,6 @@ function Activities() {
                         </React.Fragment>
                       ))}
                     </h3>
-                    <button 
-                      className="explore-activity-btn"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleExploreClick(activity.title);
-                      }}
-                    >
-                      {activity.buttonText} 
-                    </button>
                   </div>
                 </div>
               </div>
@@ -315,12 +306,7 @@ function Activities() {
                       <img src={activity.image} alt={activity.title} />
                       <div className="activity-overlay">
                         <h3>{activity.title}</h3>
-                        <button 
-                          className="explore-activity-btn"
-                          onClick={() => handleExploreClick(activity.title)}
-                        >
-                          {activity.buttonText} 
-                        </button>
+                     
                       </div>
                     </div>
                   </div>
