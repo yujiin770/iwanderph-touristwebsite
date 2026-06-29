@@ -292,7 +292,7 @@ function Activities() {
           </div>
         )}
 
-        {/* Mobile View - Carousel */}
+        {/* Mobile View  Carousel */}
         {isMobile && (
           <div className="activities-carousel" ref={carouselRef}>
             <div className="carousel-container">

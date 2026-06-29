@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { destinationService, uploadService } from '../../services/api';
 import '../../styles/Admin.css';
 
-// Modern clean SVG Icons to replace emojis
+
 const Icons = {
   MapPin: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>,
   Map: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon><line x1="8" y1="2" x2="8" y2="18"></line><line x1="16" y1="6" x2="16" y2="22"></line></svg>,
@@ -25,7 +25,7 @@ function DestinationsAdmin() {
   const [formData, setFormData] = useState({
     name: '',
     label: '',
-    description: '',
+    description: '', 
     image: '',
     rating: '4.5',
     best_time: 'November - May',
@@ -175,7 +175,7 @@ function DestinationsAdmin() {
     setImageFile(null);
   };
 
-  // Helper style for aligning icons with text cleanly
+
   const labelStyle = { display: 'flex', alignItems: 'center', gap: '0.5rem' };
 
   return (
@@ -199,7 +199,7 @@ function DestinationsAdmin() {
           </div>
 
           <div className="form-group">
-            <label style={labelStyle}><Icons.MapPin /> Label / Location</label>
+            <label style={labelStyle}><Icons.MapPin />   / Location</label>
             <input
               type="text"
               name="label"
@@ -245,7 +245,6 @@ function DestinationsAdmin() {
               </div>
             )}
           </div>
-
           <div className="form-group">
             <label style={labelStyle}><Icons.Star /> Rating</label>
             <input
@@ -259,7 +258,6 @@ function DestinationsAdmin() {
             />
           </div>
         </div>
-
         <div className="form-section" style={{ marginTop: '1rem', paddingTop: '1.5rem', borderTop: '1px solid var(--admin-border)' }}>
           <h3 style={{ ...labelStyle, color: 'var(--admin-text)', marginBottom: '1rem' }}>
             <Icons.Info /> Additional Details
@@ -303,7 +301,7 @@ function DestinationsAdmin() {
               <Icons.X /> Cancel
             </button>
           )}
-        </div>
+        </div>z
       </form>
 
       <div className="admin-list" style={{ marginTop: '3rem' }}>
