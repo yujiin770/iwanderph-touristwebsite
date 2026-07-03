@@ -42,7 +42,7 @@ function Contact({ contactInfo: propContactInfo, isAdmin = false, onUpdate }) {
     }
   };
 
-  // Fetch contact info if not provided via props
+  // Fetch contact information if not provided via props
   useEffect(() => {
     if (propContactInfo) {
       setContactInfo(propContactInfo);
@@ -372,7 +372,7 @@ function Contact({ contactInfo: propContactInfo, isAdmin = false, onUpdate }) {
             <button type="submit" className="submit-btn-modern" disabled={loading}>
               {loading ? (
                 <>
-                  <i className="fas fa-spinner fa-spin"></i> Sending...
+                  <i className="fas fa-spinner fa-spin"></i> Sending.....
                 </>
               ) : (
                 <>
