@@ -47,7 +47,7 @@ function UtilityFooter({ onSupportClick, isSupportOpen = false }) {
   };
 
   const shareOnFacebook = () => {
-    window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(window.location.href), '_blank');
+    window.open('https://www.facebook.com/iwanderpinoy' + encodeURIComponent(window.location.href), '_blank');
   };
 
   const shareOnTwitter = () => {
