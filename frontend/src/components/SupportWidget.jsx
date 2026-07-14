@@ -21,7 +21,7 @@ function SupportWidget({ isOpen, onToggle, showFloatingButton = true }) {
       action: () => {
         const section = document.getElementById('contact');
         if (section) {
-          section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          section.scrollIntoView({ behavior: 'smooth', block: 'start' })
         }
       }
     },

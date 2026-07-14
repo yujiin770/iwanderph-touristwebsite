@@ -40,11 +40,11 @@
 }
 
 .hero-content h1 {
-    font-size: 4.2rem;
-    font-weight: 800;
+    font-size: 1rem;
+    font-weight: 600;
     line-height: 1.2;
     margin: 0 0 1.5rem 0;
-    word-spacing: 0.1em;
+  
     white-space: pre-line;
 }
 
@@ -234,7 +234,7 @@ body.dark-mode .indicator.active {
     }
     
     .hero-content h1 {
-        font-size: 4.5rem;
+        font-size: 3.8rem;
     }
     
     .hero-image-container {

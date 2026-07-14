@@ -179,6 +179,85 @@ export const destinationService = {
   }
 };
 
+// ==================== ACTIVITIES SERVICES ====================
+export const activityService = {
+  getAll: async () => {
+    const { data, error } = await supabase
+      .from('activities')
+      .select('*')
+      .order('created_at', { ascending: true });
+
+    if (error) throw error;
+    return { data: data || [] };
+  },
+
+  create: async (activityData) => {
+    const { data, error } = await supabase
+      .from('activities')
+      .insert([{
+        title: activityData.title,
+        image: activityData.image,
+        created_at: new Date()
+      }])
+      .select();
+
+    if (error) throw error;
+    return { data: data[0] };
+  },
+
+  update: async (id, activityData) => {
+    const { data, error } = await supabase
+      .from('activities')
+      .update({
+        title: activityData.title,
+        image: activityData.image
+      })
+      .eq('id', id)
+      .select();
+
+    if (error) throw error;
+    return { data: data[0] };
+  },
+
+  delete: async (id) => {
+    const { error } = await supabase
+      .from('activities')
+      .delete()
+      .eq('id', id);
+
+    if (error) throw error;
+    return { message: 'Deleted successfully' };
+  }
+};
+
+// ==================== BRAND STORY SERVICES ====================
+export const brandStoryService = {
+  getContent: async () => {
+    const { data, error } = await supabase.from('brand_story_content').select('*').single();
+    if (error && error.code !== 'PGRST116') throw error;
+    return { data };
+  },
+  updateContent: async (content) => {
+    const { data: existing } = await supabase.from('brand_story_content').select('id').limit(1);
+    if (existing?.length > 0) {
+      return await supabase.from('brand_story_content').update(content).eq('id', existing[0].id);
+    } else {
+      return await supabase.from('brand_story_content').insert([content]);
+    }
+  },
+  getFeatures: async () => {
+    const { data, error } = await supabase.from('brand_story_features').select('*').order('created_at', { ascending: true });
+    if (error) throw error;
+    return { data: data || [] };
+  },
+  addFeature: async (feature) => {
+    return await supabase.from('brand_story_features').insert([feature]);
+  },
+  deleteFeature: async (id) => {
+    return await supabase.from('brand_story_features').delete().eq('id', id);
+  }
+};
+
 // ==================== GALLERY SERVICES ====================
 export const galleryService = {
   getAll: async () => {
@@ -216,7 +295,8 @@ export const galleryService = {
   }
 };
 
-// ==================== HERO CONTENT SERVICES ====================
+// Locate heroService in frontend/src/services/api.js and update to:
+
 export const heroService = {
   get: async () => {
     const { data, error } = await supabase
@@ -228,7 +308,8 @@ export const heroService = {
     return {
       data: data || {
         title: 'Explore The Islands of The Philippines',
-        description: 'Discover the stunning beaches, vibrant coral reefs, and breathtaking landscapes of the Pearl of the Orient.'
+        description: 'Discover the stunning beaches...',
+        images: [] // Ensure images array exists
       }
     };
   },
@@ -239,23 +320,23 @@ export const heroService = {
       .select('id')
       .limit(1);
 
+    const payload = {
+      title: heroData.title,
+      description: heroData.description,
+      images: heroData.images // Handle the array of URLs
+    };
+
     let result;
     if (existing && existing.length > 0) {
       result = await supabase
         .from('hero_content')
-        .update({
-          title: heroData.title,
-          description: heroData.description
-        })
+        .update(payload)
         .eq('id', existing[0].id)
         .select();
     } else {
       result = await supabase
         .from('hero_content')
-        .insert([{
-          title: heroData.title,
-          description: heroData.description
-        }])
+        .insert([payload])
         .select();
     }
 

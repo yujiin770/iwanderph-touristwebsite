@@ -127,7 +127,7 @@ function MainFooter() {
                         <p>&copy; 2026 iWander Philippines. All rights reserved.</p>
                     </div>
                     <div className="footer-social" ref={socialRef}>
-                        <a href="#" className="social-icon" aria-label="Facebook">
+                        <a href="https://www.facebook.com/iwanderpinoy " className="social-icon" aria-label="Facebook" target="_blank">
                             <i className="fab fa-facebook-f"></i>
                         </a>
                         <a href="#" className="social-icon" aria-label="Instagram">
