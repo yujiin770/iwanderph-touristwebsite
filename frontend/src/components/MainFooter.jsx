@@ -124,7 +124,7 @@ function MainFooter() {
                 {/* Bottom Bar */}
                 <div className="footer-bottom">
                     <div className="footer-copyright" ref={copyrightRef}>
-                        <p>&copy; 2026 iWander Philippines. All rights reserved.</p>
+                        <p>&copy; 2026 iWander Philipines. All rights reserved.</p>
                     </div>
                     <div className="footer-social" ref={socialRef}>
                         <a href="https://www.facebook.com/iwanderpinoy " className="social-icon" aria-label="Facebook" target="_blank">

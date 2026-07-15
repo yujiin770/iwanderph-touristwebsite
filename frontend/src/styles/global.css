@@ -12,6 +12,10 @@
     --gradient-end: #1E3A8A;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 * {
     margin: 0;
     padding: 0;

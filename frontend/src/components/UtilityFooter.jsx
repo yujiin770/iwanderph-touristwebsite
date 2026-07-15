@@ -22,6 +22,15 @@ function UtilityFooter({ onSupportClick, isSupportOpen = false }) {
         isMainFooterVisible = footerRect.top < windowHeight && footerRect.bottom > 0;
       }
 
+      console.log('UtilityFooter visibility check:', {
+        scrollY,
+        minScrollBeforeShow,
+        distanceFromBottom,
+        minBottomSpace,
+        isMainFooterVisible,
+        shouldShow: scrollY > minScrollBeforeShow && distanceFromBottom > minBottomSpace && !isMainFooterVisible
+      });
+
       if (scrollY > minScrollBeforeShow && distanceFromBottom > minBottomSpace && !isMainFooterVisible) {
         setIsVisible(true);
       } else {

@@ -44,38 +44,48 @@ function Navigation() {
         }
       }
       
-      if (currentSection !== activeSection) {
-        setActiveSection(currentSection);
-      }
+      setActiveSection(currentSection);
     };
 
     window.addEventListener('scroll', onScroll, { passive: true });
     onScroll();
 
     return () => window.removeEventListener('scroll', onScroll);
-  }, [activeSection]);
+  }, []);
 
   const handleNavClick = (section) => {
-    setActiveSection(section);
     setMenuOpen(false);
+    setActiveSection(section);
     
-    const element = document.getElementById(section);
-    if (element) {
-      const offset = 80;
-      const elementPosition = element.offsetTop - offset;
-      window.scrollTo({
-        top: elementPosition,
-        behavior: 'smooth'
-      });
-    }
+    // Use requestAnimationFrame + setTimeout for reliability
+    requestAnimationFrame(() => {
+      setTimeout(() => {
+        const element = document.getElementById(section);
+        if (element) {
+          element.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'center' 
+          });
+        }
+      }, 50);
+    });
   };
 
   const handleBookNow = () => {
-    const contactSection = document.getElementById('contact');
-    if (contactSection) {
-      contactSection.scrollIntoView({ behavior: 'smooth' });
-    }
     setMenuOpen(false);
+    setActiveSection('contact');
+    
+    requestAnimationFrame(() => {
+      setTimeout(() => {
+        const contactSection = document.getElementById('contact');
+        if (contactSection) {
+          contactSection.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'center' 
+          });
+        }
+      }, 50);
+    });
   };
 
   return (

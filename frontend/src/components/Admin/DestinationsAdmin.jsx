@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { destinationService, uploadService } from '../../services/api';
 import Swal from 'sweetalert2';
 import '../../styles/Admin.css';
+import '../../styles/DestinationsAdmin.css';
 
 const MAX_RATING = 5;
 
@@ -230,7 +231,7 @@ function DestinationsAdmin() {
               <div className="modal-footer-premium">
                 <button type="button" className="cancel-btn-alt" onClick={handleCloseModal}>Cancel</button>
                 <button type="submit" className="save-btn-premium" disabled={uploading}>
-                  {uploading ? 'Syncing...' : 'Publish Destination'}
+                  {uploading ? 'Syncing...' : editingId ? 'Update Destination' : 'Add Destination'}
                 </button>
               </div>
             </form>
