@@ -1,12 +1,12 @@
 /* --- HERO SECTION --- */
 .hero {
-    min-height: 85vh;
+    /* Add padding equal to your navbar height (usually 70px - 90px) */
+    padding-top: 100px; 
+    min-height: 100vh;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    padding: 2rem 0;
-    position: relative;
     overflow: hidden;
+    position: relative;
 }
 
 /* Animated background gradient */
@@ -311,7 +311,7 @@ body.dark-mode .indicator.active {
 /* Mobile (max-width: 767px) */
 @media (max-width: 767px) {
     .hero {
-        min-height: 90vh;
+        min-height: 110vh;
         height: auto;
         padding: 2rem 0 3rem 0;
     }

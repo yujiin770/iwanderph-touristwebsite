@@ -7,6 +7,7 @@ function Navigation() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
   const [isVisible, setIsVisible] = useState(true);
+  const [isScrolled, setIsScrolled] = useState(false);
   const lastScrollYRef = useRef(0);
 
   useEffect(() => {
@@ -14,40 +15,37 @@ function Navigation() {
     
     const onScroll = () => {
       const currentY = window.scrollY;
+      
+      // 1. Handle Visibility (Hide on scroll down, show on scroll up)
       const scrollingDown = currentY > lastScrollYRef.current;
-      const nearTop = currentY < 80;
+      const threshold = 80; // Only hide after scrolling 80px
 
-      if (nearTop) {
+      if (currentY <= threshold) {
         setIsVisible(true);
       } else {
         setIsVisible(!scrollingDown);
       }
+
+      // 2. Handle Background Change (Glassmorphism effect)
+      setIsScrolled(currentY > 20);
+
       lastScrollYRef.current = currentY;
 
-      const sections = sectionIds.map(id => {
+      // 3. Handle Active Section Highlighting
+      for (const id of sectionIds) {
         const element = document.getElementById(id);
         if (element) {
-          return {
-            id: id,
-            top: element.offsetTop - 150,
-            bottom: element.offsetTop + element.offsetHeight - 150
-          };
-        }
-        return null;
-      }).filter(Boolean);
-
-      let currentSection = 'home';
-      for (let i = 0; i < sections.length; i++) {
-        const section = sections[i];
-        if (currentY >= section.top - 50) {
-          currentSection = section.id;
+          const rect = element.getBoundingClientRect();
+          // If the section is in the top portion of the viewport
+          if (rect.top <= 150 && rect.bottom >= 150) {
+            setActiveSection(id);
+          }
         }
       }
-      
-      setActiveSection(currentSection);
     };
 
     window.addEventListener('scroll', onScroll, { passive: true });
+    // Run once on mount
     onScroll();
 
     return () => window.removeEventListener('scroll', onScroll);
@@ -57,41 +55,33 @@ function Navigation() {
     setMenuOpen(false);
     setActiveSection(section);
     
-    // Use requestAnimationFrame + setTimeout for reliability
-    requestAnimationFrame(() => {
-      setTimeout(() => {
-        const element = document.getElementById(section);
-        if (element) {
-          element.scrollIntoView({ 
-            behavior: 'smooth', 
-            block: 'center' 
-          });
-        }
-      }, 50);
-    });
+    const element = document.getElementById(section);
+    if (element) {
+      // Calculate offset so fixed header doesn't cover section title
+      const headerOffset = 80;
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
+    }
   };
 
   const handleBookNow = () => {
-    setMenuOpen(false);
-    setActiveSection('contact');
-    
-    requestAnimationFrame(() => {
-      setTimeout(() => {
-        const contactSection = document.getElementById('contact');
-        if (contactSection) {
-          contactSection.scrollIntoView({ 
-            behavior: 'smooth', 
-            block: 'center' 
-          });
-        }
-      }, 50);
-    });
+    handleNavClick('contact');
   };
 
   return (
-    <header className={`nav-header ${isVisible ? 'nav-visible' : 'nav-hidden'}`}>
+    <header 
+      className={`nav-header 
+        ${isVisible ? 'nav-visible' : 'nav-hidden'} 
+        ${isScrolled ? 'nav-scrolled' : ''}`
+      }
+    >
       <nav className="navbar">
-        <div className="logo">
+        <div className="logo" onClick={() => handleNavClick('home')}>
           <span>iWander PH</span>
           <i className="fas fa-sun logo-icon"></i>
         </div>
@@ -101,10 +91,7 @@ function Navigation() {
             <a
               href="#home"
               className={activeSection === 'home' ? 'active' : ''}
-              onClick={(e) => {
-                e.preventDefault();
-                handleNavClick('home');
-              }}
+              onClick={(e) => { e.preventDefault(); handleNavClick('home'); }}
             >
               Home
             </a>
@@ -113,10 +100,7 @@ function Navigation() {
             <a
               href="#destinations"
               className={activeSection === 'destinations' ? 'active' : ''}
-              onClick={(e) => {
-                e.preventDefault();
-                handleNavClick('destinations');
-              }}
+              onClick={(e) => { e.preventDefault(); handleNavClick('destinations'); }}
             >
               Destination
             </a>
@@ -125,10 +109,7 @@ function Navigation() {
             <a
               href="#gallery"
               className={activeSection === 'gallery' ? 'active' : ''}
-              onClick={(e) => {
-                e.preventDefault();
-                handleNavClick('gallery');
-              }}
+              onClick={(e) => { e.preventDefault(); handleNavClick('gallery'); }}
             >
               Gallery
             </a>
@@ -137,15 +118,12 @@ function Navigation() {
             <a
               href="#contact"
               className={activeSection === 'contact' ? 'active' : ''}
-              onClick={(e) => {
-                e.preventDefault();
-                handleNavClick('contact');
-              }}
+              onClick={(e) => { e.preventDefault(); handleNavClick('contact'); }}
             >
               Contact
             </a>
           </li>
-          {/* Book Now button inside mobile menu - at the bottom */}
+          
           <li className="mobile-book-now">
             <button onClick={handleBookNow} className="mobile-book-now-btn">
               <i className="fas fa-calendar-check"></i>
@@ -155,11 +133,10 @@ function Navigation() {
         </ul>
 
         <div className="nav-icons">
-          <button className="theme-toggle-btn" onClick={toggleTheme}>
+          <button className="theme-toggle-btn" onClick={toggleTheme} aria-label="Toggle Theme">
             <i className={`fas fa-${theme === 'light-mode' ? 'moon' : 'sun'}`}></i>
           </button>
           
-          {/* Desktop Book Now Button - Hidden on mobile */}
           {!user && (
             <button onClick={handleBookNow} className="book-now-btn desktop-only">
               <i className="fas fa-calendar-check"></i>
@@ -167,17 +144,17 @@ function Navigation() {
             </button>
           )}
           
-          {/* Admin only */}
           {user && (
-            <>
+            <div className="admin-controls">
               <a href="/admin" className="admin-link">Admin</a>
               <button onClick={logout} className="logout-btn">Logout</button>
-            </>
+            </div>
           )}
           
           <button
             className="hamburger"
             onClick={() => setMenuOpen(!menuOpen)}
+            aria-label="Toggle Menu"
           >
             <i className={`fas fa-${menuOpen ? 'times' : 'bars'}`}></i>
           </button>

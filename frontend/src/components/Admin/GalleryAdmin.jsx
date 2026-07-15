@@ -21,7 +21,7 @@ function GalleryAdmin() {
 
   useEffect(() => {
     fetchGallery();
-  }, []);
+  }, [])
 
   const fetchGallery = async () => {
     try {

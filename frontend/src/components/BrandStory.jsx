@@ -33,12 +33,12 @@ function BrandStory() {
 
         const ctx = gsap.context(() => {
             // ... Original Logo & Title Animations ...
-            const tl = gsap.timeline({ scrollTrigger: { trigger: sectionRef.current, start: "top 80%" } });
+            const tl = gsap.timeline({ scrollTrigger: { trigger: sectionRef.current, start: "top 90%" } });
             tl.fromTo(sunIconRef.current, { rotation: 0, scale: 0, opacity: 0, y: -30 }, { rotation: 360, scale: 1, opacity: 1, y: 0, duration: 1, ease: "back.out(1.2)" })
               .fromTo(logoRef.current, { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: "power2.out" }, "-=0.4");
 
-            gsap.fromTo(titleRef.current, { x: -80, opacity: 0 }, { x: 0, opacity: 1, duration: 0.8, ease: "power3.out", scrollTrigger: { trigger: sectionRef.current, start: "top 80%" } });
-            gsap.fromTo(descRef.current, { y: 50, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7, delay: 0.2, ease: "power2.out", scrollTrigger: { trigger: sectionRef.current, start: "top 80%" } });
+            gsap.fromTo(titleRef.current, { x: -80, opacity: 0 }, { x: 0, opacity: 1, duration: 0.8, ease: "power3.out", scrollTrigger: { trigger: sectionRef.current, start: "top 90%" } });
+            gsap.fromTo(descRef.current, { y: 50, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7, delay: 0.2, ease: "power2.out", scrollTrigger: { trigger: sectionRef.current, start: "top 90%" } });
 
             // Dynamic Feature Items stagger animation
             gsap.fromTo('.feature-item', 
