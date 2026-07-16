@@ -115,6 +115,7 @@ function DestinationsAdmin() {
   const filtered = destinations.filter(d =>
     d.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     d.label.toLowerCase().includes(searchTerm.toLowerCase())
+    
   );
 
   return (

@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { destinationService, activityService, galleryService } from '../../services/api';
 import gsap from 'gsap';
-import '../../styles/Admin.css';
+import '../../styles/DashboardHome.css'; 
+
 
 function DashboardHome() {
   const navigate = useNavigate();
