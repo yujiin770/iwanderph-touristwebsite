@@ -1,32 +1,30 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import gsap from 'gsap';
 import '../styles/Login.css';
 import { adminSettingsService } from '../services/adminSettings';
 import Swal from 'sweetalert2';
 
 function LoginPage() {
+  // Login States
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  
+
   // Forgot Password States
   const [forgotOpen, setForgotOpen] = useState(false);
-  const [securityQuestion, setSecurityQuestion] = useState('');
-  const [securityAnswer, setSecurityAnswer] = useState('');
+  const [forgotEmail, setForgotEmail] = useState('');
   const [forgotLoading, setForgotLoading] = useState(false);
-  const [cooldownSeconds, setCooldownSeconds] = useState(0);
 
   const { login } = useAuth();
   const navigate = useNavigate();
-  const location = useLocation();
-  const isResetMode = new URLSearchParams(location.search).get('mode') === 'reset';
   
   const formSideRef = useRef(null);
   const visualSideRef = useRef(null);
 
+  // GSAP Entrance Animations
   useEffect(() => {
     const ctx = gsap.context(() => {
       if (visualSideRef.current) {
@@ -38,15 +36,7 @@ function LoginPage() {
     return () => ctx.revert();
   }, []);
 
-  // Cooldown logic
-  useEffect(() => {
-    if (!forgotOpen) return;
-    const updateCooldown = () => setCooldownSeconds(adminSettingsService.getResetCooldownRemainingSeconds(email.trim().toLowerCase()));
-    updateCooldown();
-    const intervalId = window.setInterval(updateCooldown, 1000);
-    return () => window.clearInterval(intervalId);
-  }, [forgotOpen, email]);
-
+  // Handle Login Submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -56,48 +46,31 @@ function LoginPage() {
       navigate('/admin');
     } catch (err) {
       setError(err.message || 'Invalid credentials');
+      // Shake animation on error
       gsap.to(formSideRef.current, { x: 10, duration: 0.1, repeat: 3, yoyo: true });
     } finally {
       setLoading(false);
     }
   };
 
-  const handleOpenForgot = () => {
-    const trimmedEmail = email.trim().toLowerCase();
-    if (!trimmedEmail) {
-      Swal.fire('Notice', 'Please enter your Admin Email first so we can find your security question.', 'info');
-      return;
-    }
-    const recovery = adminSettingsService.getRecoverySettings(trimmedEmail);
-    if (!recovery.securityQuestion) {
-      Swal.fire('Error', 'No security question found for this email on this device.', 'error');
-      return;
-    }
-    setSecurityQuestion(recovery.securityQuestion);
-    setForgotOpen(true);
-  };
-
-  const handleVerifyAndReset = async (e) => {
-    e.preventDefault();
-    setForgotLoading(true);
-    try {
-      const trimmedEmail = email.trim().toLowerCase();
-      await adminSettingsService.verifyRecoveryAnswer(trimmedEmail, securityAnswer);
-      await adminSettingsService.sendPasswordReset(trimmedEmail);
-      
-      Swal.fire('Email Sent', 'Your answer is correct. A password reset link has been sent to your email.', 'success');
-      setForgotOpen(false);
-      setSecurityAnswer('');
-    } catch (err) {
-      Swal.fire('Verification Failed', err.message, 'error');
-    } finally {
-      setForgotLoading(false);
-    }
-  };
+const handleForgotPassword = async (e) => {
+  e.preventDefault();
+  setForgotLoading(true);
+  try {
+    await adminSettingsService.requestPasswordReset(forgotEmail);
+    Swal.fire('Success', 'Check your Gmail for the reset link!', 'success');
+    setForgotOpen(false);
+  } catch (err) {
+    // This will now catch "Email already sent. Wait 5 minutes."
+    Swal.fire('Notice', err.message, 'info'); 
+  } finally {
+    setForgotLoading(false);
+  }
+};
 
   return (
     <div className="corporate-login-container">
-      {/* Visual Side (Desktop) */}
+      {/* VISUAL SIDE (DESKTOP) */}
       <div className="login-visual-side" ref={visualSideRef}>
         <div className="visual-overlay"></div>
         <div className="visual-content">
@@ -113,7 +86,7 @@ function LoginPage() {
         </div>
       </div>
 
-      {/* Form Side */}
+      {/* FORM SIDE */}
       <div className="login-form-side" ref={formSideRef}>
         <div className="form-inner-wrapper">
           <div className="mobile-logo-header">
@@ -133,18 +106,36 @@ function LoginPage() {
               <label>Admin Email</label>
               <div className="input-with-icon">
                 <i className="fas fa-envelope"></i>
-                <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="admin@iwanderph.com" required />
+                <input 
+                  type="email" 
+                  value={email} 
+                  onChange={(e) => setEmail(e.target.value)} 
+                  placeholder="admin@iwanderph.com" 
+                  required 
+                />
               </div>
             </div>
 
             <div className="corp-input-group">
               <div className="label-row">
                 <label>Password</label>
-                <button type="button" className="forgot-link" onClick={handleOpenForgot}>Forgot password?</button>
+                <button 
+                  type="button" 
+                  className="forgot-link" 
+                  onClick={() => setForgotOpen(true)}
+                >
+                  Forgot password?
+                </button>
               </div>
               <div className="input-with-icon">
                 <i className="fas fa-lock"></i>
-                <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••" required />
+                <input 
+                  type="password" 
+                  value={password} 
+                  onChange={(e) => setPassword(e.target.value)} 
+                  placeholder="••••••••" 
+                  required 
+                />
               </div>
             </div>
 
@@ -159,39 +150,47 @@ function LoginPage() {
         </div>
       </div>
 
-      {/* RECOVERY MODAL */}
+      {/* FORGOT PASSWORD MODAL (EMAIL BASED) */}
       {forgotOpen && (
         <div className="corp-modal-overlay">
           <div className="corp-modal">
             <div className="modal-header">
-               <h3>Identity Verification</h3>
-               <button className="modal-close" onClick={() => setForgotOpen(false)}><i className="fas fa-times"></i></button>
+               <h3>Reset Password</h3>
+               <button className="modal-close" onClick={() => setForgotOpen(false)}>
+                 <i className="fas fa-times"></i>
+               </button>
             </div>
-            <form onSubmit={handleVerifyAndReset} className="modal-body">
-              <p className="recovery-instruction">Answer the security question you set in settings to receive a reset link.</p>
+            <form onSubmit={handleForgotPassword} className="modal-body">
+              <p className="recovery-instruction">
+                Enter your administrator email. We will send a secure link to reset your password.
+              </p>
               
               <div className="corp-input-group">
-                <label className="question-text">{securityQuestion}</label>
+                <label>Registered Email</label>
                 <input 
-                  type="text" 
+                  type="email" 
                   className="corp-modal-input" 
-                  placeholder="Your answer" 
-                  value={securityAnswer}
-                  onChange={(e) => setSecurityAnswer(e.target.value)}
+                  placeholder="name@iwanderph.com" 
+                  value={forgotEmail}
+                  onChange={(e) => setForgotEmail(e.target.value)}
                   required 
                 />
               </div>
 
-              {cooldownSeconds > 0 && (
-                <p className="cooldown-text">Wait {cooldownSeconds}s to try again.</p>
-              )}
-
               <button 
                 type="submit" 
                 className="corporate-submit-btn" 
-                disabled={forgotLoading || cooldownSeconds > 0}
+                disabled={forgotLoading}
               >
-                {forgotLoading ? <i className="fas fa-spinner fa-spin"></i> : 'Verify & Send Reset Email'}
+                {forgotLoading ? <i className="fas fa-spinner fa-spin"></i> : 'Send Reset Link'}
+              </button>
+              
+              <button 
+                type="button" 
+                className="modal-cancel-text" 
+                onClick={() => setForgotOpen(false)}
+              >
+                Back to Sign In
               </button>
             </form>
           </div>

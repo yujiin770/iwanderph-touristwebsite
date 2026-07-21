@@ -10,6 +10,8 @@ import AdminDashboard from './pages/AdminDashboard';
 import DestinationsPage from './pages/DestinationsPage';
 import ActivitiesPage from './components/ActivitiesPage';
 import GalleryPage from './components/GalleryPage';
+import SignupPage from './pages/SignupPage';
+import UpdatePasswordPage from './pages/UpdatePasswordPage';
 
 // Protected route component
 function ProtectedRoute({ children }) {
@@ -34,6 +36,8 @@ function AppRoutes() {
       <Route path="/destinations" element={<DestinationsPage />} />
       <Route path="/activities" element={<ActivitiesPage />} />
       <Route path="/gallery" element={<GalleryPage />} />
+      <Route path="/complete-signup" element={<SignupPage />} />
+      <Route path="/update-password" element={<UpdatePasswordPage />} />
       <Route
         path="/login"
         element={user && !isPasswordResetRoute ? <Navigate to="/admin" /> : <LoginPage />}
