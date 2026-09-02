@@ -34,7 +34,7 @@ const createCustomIcon = (color = '#3b82f6') => {
 // Component to animate map view
 const AnimateMapView = ({ center, zoom }) => {
   const map = useMap();
-  
+
   useEffect(() => {
     if (center && zoom) {
       map.flyTo(center, zoom, {
@@ -43,7 +43,7 @@ const AnimateMapView = ({ center, zoom }) => {
       });
     }
   }, [center, zoom, map]);
-  
+
   return null;
 };
 
@@ -68,7 +68,7 @@ const getDestinationCoordinates = (name) => {
     'Batangas': { lat: 13.7565, lng: 121.0583, region: 'Luzon', color: '#3b82f6' },
     'La Union': { lat: 16.6150, lng: 120.3194, region: 'Luzon', color: '#3b82f6' },
     'Nueva Vizcaya': { lat: 16.4833, lng: 121.2167, region: 'Luzon', color: '#3b82f6' },
-    
+
     // Visayas
     'Boracay': { lat: 11.9674, lng: 121.9247, region: 'Visayas', color: '#10b981' },
     'Boracay Island': { lat: 11.9674, lng: 121.9247, region: 'Visayas', color: '#10b981' },
@@ -85,7 +85,7 @@ const getDestinationCoordinates = (name) => {
     'Tacloban': { lat: 11.2444, lng: 125.0039, region: 'Visayas', color: '#10b981' },
     'Samar': { lat: 12.0000, lng: 125.0000, region: 'Visayas', color: '#10b981' },
     'Siquijor': { lat: 9.2000, lng: 123.5000, region: 'Visayas', color: '#10b981' },
-    
+
     // Mindanao
     'Siargao': { lat: 9.8621, lng: 126.0464, region: 'Mindanao', color: '#f59e0b' },
     'Siargao Island': { lat: 9.8621, lng: 126.0464, region: 'Mindanao', color: '#f59e0b' },
@@ -101,12 +101,12 @@ const getDestinationCoordinates = (name) => {
     'Camiguin': { lat: 9.1667, lng: 124.7167, region: 'Mindanao', color: '#f59e0b' },
     'Bukidnon': { lat: 8.0000, lng: 125.0000, region: 'Mindanao', color: '#f59e0b' },
   };
-  
+
   // Try exact match first
   if (coordsMap[name]) {
     return coordsMap[name];
   }
-  
+
   // Try case-insensitive partial match
   const lowerName = name.toLowerCase();
   for (const [key, value] of Object.entries(coordsMap)) {
@@ -114,7 +114,7 @@ const getDestinationCoordinates = (name) => {
       return value;
     }
   }
-  
+
   // Default fallback - center of Philippines
   return null;
 };
@@ -131,7 +131,7 @@ function DestinationMap({ destinations }) {
 
   // Regions filter
   const regions = ['all', 'Luzon', 'Visayas', 'Mindanao'];
-  
+
   // Filter destinations by region and get coordinates
   const mapDestinations = destinations.filter(dest => {
     const coords = getDestinationCoordinates(dest.name);
@@ -188,7 +188,7 @@ function DestinationMap({ destinations }) {
       setMapCenter(coords);
       setMapZoom(12);
     }
-    
+
     // Animate marker on click
     gsap.to('.custom-marker', {
       scale: 1.3,
@@ -255,17 +255,18 @@ function DestinationMap({ destinations }) {
               zoomControl={true}
               scrollWheelZoom={true}
             >
+              {/* FIXED TILE LAYER BELOW */}
               <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               />
-              
+
               <AnimateMapView center={[mapCenter.lat, mapCenter.lng]} zoom={mapZoom} />
-              
+
               {mapDestinations.map((dest, idx) => {
                 const coords = getDestinationCoordinates(dest.name);
                 if (!coords) return null;
-                
+
                 return (
                   <Marker
                     key={dest.id || idx}
@@ -277,8 +278,8 @@ function DestinationMap({ destinations }) {
                   >
                     <Popup className="custom-popup">
                       <div className="map-popup-content">
-                        <img 
-                          src={dest.image} 
+                        <img
+                          src={dest.image}
                           alt={dest.name}
                           onError={(e) => {
                             e.target.src = 'https://images.pexels.com/photos/1632242/pexels-photo-1632242.jpeg';
@@ -291,7 +292,7 @@ function DestinationMap({ destinations }) {
                             <i className="fas fa-star"></i>
                             <span>{dest.rating || '4.5'}</span>
                           </div>
-                          <button 
+                          <button
                             className="popup-btn"
                             onClick={() => handleViewDetailsClick(dest)}
                           >

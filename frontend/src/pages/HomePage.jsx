@@ -45,7 +45,7 @@ function HomePage() {
   // Critical: Recalculate ScrollTrigger positions whenever data changes or loader is removed
   useEffect(() => {
     if (!loading && !showLoader) {
-      // Small delay ensures DOM elements are rendered before calculating height
+      // Small delay ensures DOM elements are rendered before calculating heigh
       const timer = setTimeout(() => {
         ScrollTrigger.refresh();
       }, 500);
